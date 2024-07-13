@@ -1,40 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Agregar Departamento</title>
-</head>
-<body>
-    <h1>Agregar Departamento</h1>
-    <form action="{{ route('departamentos.store') }}" method="POST">
-        @csrf
-        <div>
-            <label for="nombre_departamento">Nombre del Departamento:</label>
-            <input type="text" id="nombre_departamento" name="nombre_departamento" required>
-        </div>
-        <div>   
-            <label for="gerente_id">ID del Gerente:</label>
-            <input type="number" id="gerente_id" name="gerente_id" required>
-        </div>
-        <button type="submit">Agregar</button>
-    </form>
+@extends('layout.app')
 
-    @if(session('success'))
-        <div>
-            {{ session('success') }}
+@section('content')
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Nuevo departamento</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb p-0 m-0">
+                    <li class="breadcrumb-item"><a href="#">Tablero</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('departamentos.create') }}">Departamentos</a></li>
+                    <li class="breadcrumb-item active">Nuevo</li>
+                </ol>
+            </div>
+            <div class="clearfix"></div>
         </div>
-    @endif
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Ingresar datos</h3>
+            </div>
+            <div class="card-body">
+                <div class="form">
+                    <form action="{{ route('departamentos.store') }}"
+                        method="POST"class="cmxform form-horizontal tasi-form" id="commentForm" novalidate="novalidate">
+                        @csrf
+                        <div class="form-group row">
+                            <label for="cname" class="col-form-label col-lg-2">Nombre</label>
+                            <div class="col-lg-4">
+                                <input class="form-control" id="cname" type="text" id="nombre_departamento"
+                                    name="nombre_departamento" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="cemail" class="col-form-label col-lg-2">Encargado</label>
+                            <div class="col-lg-4">
 
-    @if($errors->any())
-        <div>
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                                <input class="form-control" type="number" id="gerente_id" name="gerente_id"
+                                    required="" aria-required="true">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="offset-lg-2 col-lg-10">
+                                <button class="btn btn-success btn-xs waves-effect waves-light mr-1"
+                                    type="submit"><i class="mdi mdi-content-save-all"></i> Save</button>
+                                <button class="btn btn-danger btn-xs waves-effect" type="button"><i class="mdi mdi-close-box-outline"></i> Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    @if (session('success'))
+                        <div>
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                <!-- .form -->
+            </div>
+            <!-- card-body -->
         </div>
-    @endif
-</body>
-</html>
+        <!-- card -->
+    </div>
+    <!-- col -->
+</div>
+@endsection

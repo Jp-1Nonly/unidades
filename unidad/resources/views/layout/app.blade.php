@@ -9,7 +9,7 @@
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
     <!-- Plugins css-->
     <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
@@ -21,44 +21,36 @@
     <!-- Datables-->
 
     <link href="{{ asset('assets/libs/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('assets/libs/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('assets/libs/datatables/fixedHeader.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('assets/libs/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('assets/libs/datatables/scroller.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables/fixedHeader.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables/scroller.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
 
 </head>
 
 <body>
-
     <!-- Begin page -->
     <div id="wrapper">
-
-
         <!-- Topbar Start -->
         <div class="navbar-custom">
             <ul class="list-unstyled topnav-menu float-right mb-0">
-
-
-
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                        <img src="{{ asset('assets/images/users/avatar-1.jpg')}}" alt="user-image" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <!-- item-->
                         <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome !</h6>
+                            <h6 class="text-overflow m-0">On line</h6>
                         </div>
-
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item">
                             <i class="mdi mdi-face-profile"></i>
                             <span>Profile</span>
                         </a>
-
-
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item">
@@ -78,30 +70,29 @@
                 </li>
 
 
-
             </ul>
 
             <!-- LOGO -->
             <div class="logo-box">
                 <a href="index.html" class="logo text-center logo-dark">
                     <span class="logo-lg">
-                        <img src="assets/images/logo-dark.png" alt="" height="16">
+                        <img src="{{ asset('assets/images/logo-dark.png')}}" alt="" height="16">
                         <!-- <span class="logo-lg-text-dark">Moltran</span> -->
                     </span>
                     <span class="logo-sm">
                         <!-- <span class="logo-lg-text-dark">M</span> -->
-                        <img src="assets/images/logo-sm.png" alt="" height="25">
+                        <img src="{{ asset('assets/images/logo-sm.png')}}" alt="" height="25">
                     </span>
                 </a>
 
                 <a href="index.html" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img src="assets/images/logo-light.png" alt="" height="16">
+                        <img src="{{ asset('assets/images/logo-light.png')}}" alt="" height="16">
                         <!-- <span class="logo-lg-text-dark">Moltran</span> -->
                     </span>
                     <span class="logo-sm">
                         <!-- <span class="logo-lg-text-dark">M</span> -->
-                        <img src="assets/images/logo-sm.png" alt="" height="25">
+                        <img src="{{ asset('assets/images/logo-sm.png')}}" alt="" height="25">
                     </span>
                 </a>
             </div>
@@ -131,12 +122,13 @@
                     <div class="user-box">
 
                         <div class="float-left">
-                            <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-md rounded-circle">
+                            <img src="{{ asset('assets/images/users/avatar-1.jpg')}}" alt=""
+                                class="avatar-md rounded-circle">
                         </div>
                         <div class="user-info">
                             <div class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                     John Doe <i class="mdi mdi-chevron-down"></i>
                                 </a>
                                 <ul class="dropdown-menu" x-placement="bottom-start"
@@ -163,6 +155,19 @@
                                 <i class="mdi mdi-home"></i>
                                 <span> Dashboard </span>
                             </a>
+                        </li>
+                        
+                        <li>
+                            <a href="javascript: void(0);" class="waves-effect">
+                                <i class="mdi mdi-account-multiple"></i>
+                                <span> Personal </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li><a href="{{ url('/departamentos') }}">Departamentos</a></li>
+                                <li><a href="{{ url('/personas') }}">Personas</a></li>
+                                <li><a href="{{ url('/visitantes') }}">Visitantes</a></li>
+                            </ul>
                         </li>
 
                         <li>
