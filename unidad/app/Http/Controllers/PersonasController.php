@@ -13,7 +13,7 @@ class PersonasController extends Controller
     
     public function index()
     {
-        $url = 'https://apis.xn--oscarcaas-r6a.co/api/personas';
+        $url = 'https://ph.xn--oscarcaas-r6a.co/api/personas';
 
         // Realizar la solicitud GET
         $response = Http::get($url);
@@ -34,7 +34,7 @@ class PersonasController extends Controller
    
     public function create()
     {
-       $url = 'https://apis.xn--oscarcaas-r6a.co/api/tipos';
+       $url = 'https://ph.xn--oscarcaas-r6a.co/api/tipos';
        
        $response = Http::get($url);
        
@@ -42,7 +42,7 @@ class PersonasController extends Controller
         $tipos = $response->json();
        }
 
-       $url = 'https://apis.xn--oscarcaas-r6a.co/api/cargos';
+       $url = 'https://ph.xn--oscarcaas-r6a.co/api/cargos';
        
        $response = Http::get($url);
        
@@ -50,7 +50,7 @@ class PersonasController extends Controller
         $cargos = $response->json();
        }
 
-       $url = 'https://apis.xn--oscarcaas-r6a.co/api/departamentos';
+       $url = 'https://ph.xn--oscarcaas-r6a.co/api/departamentos';
 
         // Realizar la solicitud GET
         $response = Http::get($url);
@@ -69,34 +69,37 @@ class PersonasController extends Controller
     
     }
 
-   
     public function store(Request $request)
-{
+    {
+        $request->validate([
+            'documento' => 'required|string|max:255',
+            'nombre_persona' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'correo' => 'required|email|max:255',
+            'telefono' => 'required|string|max:10', 
+            'fecha_contratacion' => 'required|date',
+            'cargo_id' => 'required|integer',
+            'departamento_id' => 'required|integer',
+        ]);
     
-    Log::info('Datos del formulario recibidos:', $request->all());
-    $request->validate([
-        'documento' => 'required|string|max:255',
-        'nombre_persona' => 'required|string|max:255',
-        'apellido' => 'required|string|max:255',
-        'tipo_persona_id' => 'required|integer',
-        // Otros campos según sea necesario
-    ]);
-
-    $response = Http::post('https://apis.xn--oscarcaas-r6a.co/api/personasadd', [
-        'documento' => $request->input('documento'),
-        'nombre_persona' => $request->input('nombre_persona'),
-        'apellido' => $request->input('apellido'),
-        'tipo_persona_id' => $request->input('tipo_persona_id'),
-        
-    ]);
-
-
-    if ($response->successful()) {
-        return redirect()->route('personas')->with('success', 'Persona agregada exitosamente.');
-    } else {
-        return redirect()->route('personas.create')->withErrors('Error al agregar la persona.');
+        $response = Http::post('https://ph.xn--oscarcaas-r6a.co/api/personasadd', [
+            'documento' => $request->input('documento'),
+            'nombre_persona' => $request->input('nombre_persona'),
+            'apellido' => $request->input('apellido'),
+            'correo' => $request->input('correo'),
+            'telefono' => $request->input('telefono'),
+            'fecha_contratacion' => $request->input('fecha_contratacion'),
+            'cargo_id' => $request->input('cargo_id'),
+            'departamento_id' => $request->input('departamento_id'),
+        ]);
+    
+        if ($response->successful()) {
+            return redirect()->route('personas.index')->with('success', 'Persona agregada exitosamente.');
+        } else {
+            return redirect()->route('personas.create')->withErrors('Error al agregar la persona.');
+        }
     }
-}
+    
 
 
     public function show(string $id)

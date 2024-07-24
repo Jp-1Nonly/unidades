@@ -21,20 +21,21 @@ Route::middleware('auth')->group(function () {
 });
 
 //Rutas para Departamentos
-Route::get('/departamentos', [DepartamentosController::class, 'index'])->name("departamentos");
+Route::get('/departamentos', [DepartamentosController::class, 'index'])->name("departamentos.index");
 Route::get('/departamentos/create', [DepartamentosController::class, 'create'])->name('departamentos.create');
 Route::post('/departamentosadd', [DepartamentosController::class, 'store'])->name('departamentos.store');
 
 
 //Rutas para Personas
-Route::get('/personas', [PersonasController::class, 'index'])->name('personas');
+Route::get('/personas', [PersonasController::class, 'index'])->name('personas.index');
 Route::get('personas/create', [PersonasController::class, 'create'])->name('personas.create');
 Route::post('/personas', [PersonasController::class, 'store'])->name('personas.store');
 
 //Rutas para visitantes
-Route:: get('/visitantes', [VisitantesController::class, 'index'])->name('visitantes');
+Route:: get('/visitantes', [VisitantesController::class, 'index'])->name('visitantes.index');
 Route::get('/visitantes/create', [VisitantesController::class, 'create'])->name('visitantes.create');
-Route::post('/visitantes', [VisitantesController::class, 'store'])->name('visitantes.store');
+Route::post('/visitantesadd', [VisitantesController::class, 'store'])->name('visitantes.store');
+
 
 
 

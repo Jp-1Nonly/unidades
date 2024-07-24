@@ -10,7 +10,7 @@ class DepartamentosController extends Controller
 
     public function index()
     {
-        $url = 'https://apis.xn--oscarcaas-r6a.co/api/departamentos';
+        $url = 'https://ph.xn--oscarcaas-r6a.co/api/departamentos';
 
         // Realizar la solicitud GET
         $response = Http::get($url);
@@ -36,23 +36,23 @@ class DepartamentosController extends Controller
 
     
     public function store(Request $request)
-    {
-        $request->validate([
-            'nombre_departamento' => 'required|string|max:255',
-            'gerente_id' => 'required|integer',
-        ]);
+{
+    $request->validate([
+        'nombre_dpto' => 'required|string|max:255',
+        'lider_id' => 'required|integer',
+    ]);
 
-        $response = Http::post('https://apis.xn--oscarcaas-r6a.co/api/departamentosadd', [
-            'nombre_departamento' => $request->input('nombre_departamento'),
-            'gerente_id' => $request->input('gerente_id'),
-        ]);
+    $response = Http::post('https://ph.xn--oscarcaas-r6a.co/api/departamentosadd', [
+        'nombre_dpto' => $request->input('nombre_dpto'),
+        'lider_id' => $request->input('lider_id'),
+    ]);
 
-        if ($response->successful()) {
-            return redirect()->route('departamentos')->with('success', 'Departamento agregado exitosamente.');
-        } else {
-            return redirect()->route('departamentos.create')->withErrors('Error al agregar el departamento.');
-        }
+    if ($response->successful()) {
+        return redirect()->route('departamentos.index')->with('success', 'Departamento agregado exitosamente.');
+    } else {
+        return redirect()->route('departamentos.create')->withErrors('Error al agregar el departamento.');
     }
+}
 
     /**
      * Display the specified resource.

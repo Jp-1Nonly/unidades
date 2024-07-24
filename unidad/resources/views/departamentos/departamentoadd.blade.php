@@ -9,7 +9,7 @@
             <div class="page-title-right">
                 <ol class="breadcrumb p-0 m-0">
                     <li class="breadcrumb-item"><a href="#">Tablero</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('departamentos.create') }}">Departamentos</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('departamentos.index') }}">Departamentos</a></li>
                     <li class="breadcrumb-item active">Nuevo</li>
                 </ol>
             </div>
@@ -27,20 +27,20 @@
             <div class="card-body">
                 <div class="form">
                     <form action="{{ route('departamentos.store') }}"
-                        method="POST"class="cmxform form-horizontal tasi-form" id="commentForm" novalidate="novalidate">
+                        method="POST" class="cmxform form-horizontal tasi-form" id="commentForm" novalidate="novalidate">
                         @csrf
                         <div class="form-group row">
-                            <label for="cname" class="col-form-label col-lg-2">Nombre</label>
+                            <label for="nombre_dpto" class="col-form-label col-lg-2">Nombre</label>
                             <div class="col-lg-4">
-                                <input class="form-control" id="cname" type="text" id="nombre_departamento"
-                                    name="nombre_departamento" required="" aria-required="true">
+                                <input class="form-control" id="nombre_dpto" type="text" name="nombre_dpto"
+                                    required="" aria-required="true">
                             </div>
                         </div>
+                        
                         <div class="form-group row">
-                            <label for="cemail" class="col-form-label col-lg-2">Encargado</label>
+                            <label for="lider_id" class="col-form-label col-lg-2">Encargado</label>
                             <div class="col-lg-4">
-
-                                <input class="form-control" type="number" id="gerente_id" name="gerente_id"
+                                <input class="form-control" type="number" id="lider_id" name="lider_id"
                                     required="" aria-required="true">
                             </div>
                         </div>
@@ -48,8 +48,8 @@
                         <div class="form-group row mb-0">
                             <div class="offset-lg-2 col-lg-10">
                                 <button class="btn btn-success btn-xs waves-effect waves-light mr-1"
-                                    type="submit"><i class="mdi mdi-content-save-all"></i> Save</button>
-                                <button class="btn btn-danger btn-xs waves-effect" type="button"><i class="mdi mdi-close-box-outline"></i> Cancel</button>
+                                    type="submit"><i class="mdi mdi-content-save-all"></i> Guardar</button>
+                                <button class="btn btn-danger btn-xs waves-effect" type="button" onclick="window.history.back();"><i class="mdi mdi-close-box-outline"></i> Cancelar</button>
                             </div>
                         </div>
                     </form>

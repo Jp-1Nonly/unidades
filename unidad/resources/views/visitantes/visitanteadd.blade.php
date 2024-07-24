@@ -30,41 +30,38 @@
                             @csrf
                             <div class="row align-items-start">
                                 <div class="col-lg-6"> <!-- Columna izquierda -->
-                           
+                        
                                     <div class="form-group row">
-                                        <label for="nombre_departamento" class="col-form-label col-lg-4">Documento</label>
+                                        <label for="documento" class="col-form-label col-lg-4">Documento</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" id="documento" type="text" name="documento" placeholder="Ingresa el documento" aria-required="true" required>
+                                            <input class="form-control" id="documento_visitante" type="text" name="documento_visitante" placeholder="Ingresa el documento" aria-required="true" required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="nombre_departamento" class="col-form-label col-lg-4">Nombre</label>
+                                        <label for="nombre_visitante" class="col-form-label col-lg-4">Nombre</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" id="nombre_persona" type="text" name="nombre_persona" placeholder="Ingresa el nombre" aria-required="true" required>
+                                            <input class="form-control" id="nombre_visitante" type="text" name="nombre_visitante" placeholder="Ingresa el nombre" aria-required="true" required>
                                         </div>
                                     </div>
-
+                        
                                     <div class="form-group row">
-                                        <label for="apellido" class="col-form-label col-lg-4">Apellidos</label>
+                                        <label for="apellido_visitante" class="col-form-label col-lg-4">Apellido</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" id="apellido" type="text" name="apellido" placeholder="Ingresa el apellido" aria-required="true" required>
+                                            <input class="form-control" id="apellido_visitante" type="text" name="apellido_visitante" placeholder="Ingresa el apellido" aria-required="true" required>
                                         </div>
                                     </div> 
                                     <div class="form-group row">
                                         <label for="tipo" class="col-form-label col-lg-4">Tipo de persona</label>
                                         <div class="col-lg-8">
-                                            <select class="form-control" name="tipo_persona_id" id="tipo" required>
+                                            <select class="form-control" name="id_tipo_visitante" id="tipo" required>
                                                 <option value="" disabled selected>Elige un tipo</option>
                                                 @foreach ($tipos as $tipo)
                                                     <option value="{{ $tipo['id'] }}">{{ $tipo['descripcion'] }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div>  
+                                    </div> 
                                     
-                                    <input class="form-control" id="nombre_persona" type="hidden" name="nombre_persona" placeholder="Ingresa el nombre" aria-required="true" required>
-
-                                                                       
                                 </div>
                               
                             </div>
@@ -76,9 +73,7 @@
                                 </div>
                             </div>
                         </form>
-                       
-
-
+                        
                         @if (session('success'))
                             <div>
                                 {{ session('success') }}
