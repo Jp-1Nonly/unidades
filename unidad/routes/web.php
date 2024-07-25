@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\PersonasController;
+use App\Http\Controllers\ResidentesController;
 use App\Http\Controllers\VisitantesController;
 
 Route::get('/', function () {
@@ -35,6 +36,11 @@ Route::post('/personas', [PersonasController::class, 'store'])->name('personas.s
 Route:: get('/visitantes', [VisitantesController::class, 'index'])->name('visitantes.index');
 Route::get('/visitantes/create', [VisitantesController::class, 'create'])->name('visitantes.create');
 Route::post('/visitantesadd', [VisitantesController::class, 'store'])->name('visitantes.store');
+
+//Rutas para residentes
+Route:: get('/residentes', [ResidentesController::class, 'index'])->name('residentes.index');
+Route::get('/residentes/create', [ResidentesController::class, 'create'])->name('residentes.create');
+Route::post('/residentesadd', [ResidentesController::class, 'store'])->name('residentes.store');
 
 
 

@@ -68,37 +68,39 @@ class PersonasController extends Controller
         ]);
     
     }
-
     public function store(Request $request)
-    {
-        $request->validate([
-            'documento' => 'required|string|max:255',
-            'nombre_persona' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'correo' => 'required|email|max:255',
-            'telefono' => 'required|string|max:10', 
-            'fecha_contratacion' => 'required|date',
-            'cargo_id' => 'required|integer',
-            'departamento_id' => 'required|integer',
-        ]);
-    
-        $response = Http::post('https://ph.xn--oscarcaas-r6a.co/api/personasadd', [
-            'documento' => $request->input('documento'),
-            'nombre_persona' => $request->input('nombre_persona'),
-            'apellido' => $request->input('apellido'),
-            'correo' => $request->input('correo'),
-            'telefono' => $request->input('telefono'),
-            'fecha_contratacion' => $request->input('fecha_contratacion'),
-            'cargo_id' => $request->input('cargo_id'),
-            'departamento_id' => $request->input('departamento_id'),
-        ]);
-    
-        if ($response->successful()) {
-            return redirect()->route('personas.index')->with('success', 'Persona agregada exitosamente.');
-        } else {
-            return redirect()->route('personas.create')->withErrors('Error al agregar la persona.');
-        }
+{
+    $request->validate([
+        'documento' => 'required|string|max:255',
+        'nombre_persona' => 'required|string|max:255',
+        'apellido' => 'required|string|max:255',
+        'correo' => 'required|email|max:255',
+        'telefono' => 'required|string|max:10', 
+        'fecha_contratacion' => 'required|date',
+        'cargo_id' => 'required|integer',
+        'departamento_id' => 'required|integer',
+    ]);
+
+    $response = Http::post('https://ph.xn--oscarcaas-r6a.co/api/personasadd', [
+        'documento' => $request->input('documento'),
+        'nombre_persona' => $request->input('nombre_persona'),
+        'apellido' => $request->input('apellido'),
+        'correo' => $request->input('correo'),
+        'telefono' => $request->input('telefono'),
+        'fecha_contratacion' => $request->input('fecha_contratacion'),
+        'cargo_id' => $request->input('cargo_id'),
+        'departamento_id' => $request->input('departamento_id'),
+    ]);
+
+    // Agregar registros para verificar la respuesta
+    Log::info('Respuesta de la API:', ['response' => $response->json()]);
+
+    if ($response->successful()) {
+        return redirect()->route('personas.index')->with('success', 'Persona agregada con éxito.');
+    } else {
+        return redirect()->route('personas.create')->withErrors('Error al agregar la persona.');
     }
+}
     
 
 

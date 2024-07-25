@@ -25,7 +25,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                
-                <a href="{{ route('departamentos.create') }}" class="btn btn-warning btn-xs"><i class="mdi mdi-account-multiple"></i> Nuevo</a>
+                <a href="{{ route('departamentos.create') }}" class="btn btn-danger btn-xs"><i class="mdi mdi-account-multiple"></i> Nuevo</a>
             </div>
             
     

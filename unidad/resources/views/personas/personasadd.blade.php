@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Nuevo registro</h4>
+                   
                     <div class="page-title-right">
                         <ol class="breadcrumb p-0 m-0">
                             <li class="breadcrumb-item"><a href="#">Tablero</a></li>

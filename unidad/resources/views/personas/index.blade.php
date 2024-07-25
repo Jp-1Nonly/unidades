@@ -1,11 +1,12 @@
 @extends('layout.app')
 
 @section('content')
+
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
         <div class="page-title-box">
-            <h4 class="page-title">Talento humano</h4>
+            <h4 class="page-title">Colaboradores</h4>
             <div class="page-title-right">
                 <ol class="breadcrumb p-0 m-0">
                     <li class="breadcrumb-item"><a href="#">Tablero</a></li>
@@ -25,7 +26,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                
-                <a href="{{ route('personas.create') }}" class="btn btn-warning btn-xs"><i class="mdi mdi-account-multiple"></i> Nuevo</a>
+                <a href="{{ route('personas.create') }}" class="btn btn-danger btn-xs"><i class="mdi mdi-account-multiple"></i> Nuevo</a>
             </div>
             
     
@@ -34,6 +35,7 @@
                 <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
+                            <th>Documento</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Correo</th>
@@ -45,7 +47,7 @@
                     <tbody>
                         @foreach ($personas as $persona)
                         <tr>
-                         
+                            <td>{{ $persona['documento'] }}</td>
                             <td>{{ $persona['nombre_persona'] }}</td>
                             <td>{{ $persona['apellido'] }}</td>
                             <td>{{ $persona['correo'] }}</td>
@@ -62,4 +64,36 @@
     </div>
 
 </div>
+@if (session('success'))
+@push('scripts')
+    <script>
+        Swal.fire({
+            position: "top-end",
+            toast: 'true',
+            icon: 'success',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>
+@endpush
+@endif
+
+@if ($errors->any())
+@push('scripts')
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: `
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            `
+        });
+    </script>
+@endpush
+@endif
 @endsection

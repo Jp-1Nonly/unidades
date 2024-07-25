@@ -27,6 +27,14 @@ router.get("/cargos", (req, res) => {
   });
 });
 
+router.get("/residentes", (req, res) => {
+  let sql = "SELECT * FROM residentes";
+  db.query(sql, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
 router.get("/visitantes", (req, res) => {
     let sql = "SELECT documento_visitante,  nombre_visitante, apellido_visitante, descripcion FROM visitantes INNER JOIN tipospersonas ON visitantes.id_tipo_visitante=tipospersonas.id";
     db.query(sql, (err, results) => {
@@ -37,7 +45,7 @@ router.get("/visitantes", (req, res) => {
 
 router.get("/personas", (req, res) => {
   let sql =
-    "SELECT personas.nombre_persona, personas.apellido, personas.correo, personas.fecha_contratacion, cargos.nombre_cargo, departamentos.nombre_dpto FROM personas INNER JOIN cargos ON cargos.id=personas.cargo_id INNER JOIN departamentos ON departamentos.id=personas.departamento_id";
+    "SELECT personas.documento, personas.nombre_persona, personas.apellido, personas.correo, personas.fecha_contratacion, cargos.nombre_cargo, departamentos.nombre_dpto FROM personas INNER JOIN cargos ON cargos.id=personas.cargo_id INNER JOIN departamentos ON departamentos.id=personas.departamento_id";
   db.query(sql, (err, results) => {
     if (err) throw err;
     res.json(results);
@@ -68,27 +76,13 @@ router.post("/departamentosadd", (req, res) => {
 
 
 router.post("/personasadd", (req, res) => {
-  const {
-    documento,
-    nombre_persona,
-    apellido,
-    correo,
-    telefono,
-    fecha_contratacion,
-    cargo_id,
-    departamento_id
+  const {documento, nombre_persona, apellido, correo, telefono, fecha_contratacion, 
+    cargo_id, departamento_id
   } = req.body;
 
   // Validación de los campos recibidos
   if (
-    !documento ||
-    !nombre_persona ||
-    !apellido ||
-    !correo ||
-    !telefono ||
-    !fecha_contratacion ||
-    !cargo_id ||
-    !departamento_id 
+    !documento ||!nombre_persona ||!apellido ||!correo ||!telefono ||!fecha_contratacion ||!cargo_id ||!departamento_id 
   ) {
     return res.status(400).json({ success: false, error: "Todos los campos son requeridos" });
   }
@@ -137,6 +131,33 @@ router.post("/visitantesadd", (req, res) => {
     });
   });
 });
+
+router.post("/residentesadd", (req, res) => {
+  const { documento, nombre, apellido, edad, telefono, correo, apartamento, mascota, condicion } = req.body;
+
+  // Verificar que los campos obligatorios no estén vacíos
+  if (!documento || !nombre || !apellido || !edad || !apartamento) {
+    return res.status(400).json({ success: false, error: "Faltan parámetros obligatorios" });
+  }
+
+  // Inserción en la base de datos
+  let sql = "INSERT INTO `residentes`(`documento`, `nombre`, `apellido`, `edad`, `correo`, `telefono`, `apartamento`, `mascota`, `condicion`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+
+  db.query(sql, [documento, nombre, apellido, edad, correo || null, telefono || null, apartamento, mascota || null, condicion || null], (err, result) => {
+    if (err) {
+      console.error("Error al insertar residente:", err);
+      return res.status(500).json({ success: false, error: "Error al insertar residente" });
+    }
+    res.json({
+      success: true,
+      message: "Residente agregado",
+      residenteId: result.insertId,
+    });
+  });
+});
+
+
+
 
 
 

@@ -26,6 +26,8 @@
         type="text/css" />
     <link href="{{ asset('assets/libs/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables/scroller.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
 
 
 </head>
@@ -165,8 +167,9 @@
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li><a href="{{ url('/departamentos') }}">Departamentos</a></li>
-                                <li><a href="{{ url('/personas') }}">Personas</a></li>
-                                <li><a href="{{ url('/visitantes') }}">Visitantes</a></li>
+                                <li><a href="{{ url('/personas') }}">Colaboradores</a></li>
+                                <li><a href="{{ url('/residentes') }}">Residentes</a></li>
+                                <li><a href="{{ url('/visitantes') }}">Visitantes</a></li>                                
                             </ul>
                         </li>
 
@@ -402,7 +405,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            2016 - 2020 &copy; Moltran theme by <a href="">Coderthemes</a>
+                           2024 &copy; PHSoft <a href=""></a>
                         </div>
                     </div>
                 </div>
@@ -521,6 +524,8 @@
 
     <!-- App js -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('scripts')
 
 </body>
 
