@@ -79,11 +79,25 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="condicion" class="col-form-label col-lg-4">Condición</label>
+                                        <label for="condicion" class="col-form-label col-lg-4">Categoría</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" id="condicion" type="text" name="condicion" placeholder="Si no tiene dejar en blanco">
+                                            <select class="form-control" id="condicion" name="condicion" required>
+                                                <option value="Propietario">Propietario</option>
+                                                <option value="Propietario residente">Propietario residente</option>
+                                                <option value="Residente">Residente</option>
+                                            </select>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label for="discapacidad" class="col-form-label col-lg-4">Discapacidad</label>
+                                        <div class="col-lg-8">
+                                            <select class="form-control" id="discapacidad" name="discapacidad">
+                                                <option value="Ninguna">Ninguna</option>
+                                                <option value="Movilidad">Movilidad</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <hr>

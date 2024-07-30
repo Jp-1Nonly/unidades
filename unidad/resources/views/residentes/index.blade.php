@@ -44,7 +44,8 @@
                                     <th>Correo</th>
                                     <th>Celular</th>
                                     <th>Mascota</th>
-                                    <th>Condición</th>
+                                    <th>Categoría</th>
+                                    <th>Discapacidad</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,7 +59,7 @@
                                         <td>{{ $residente['telefono'] }}</td>
                                         <td>{{ $residente['mascota'] }}</td>
                                         <td>{{ $residente['condicion'] }}</td>
-
+                                        <td>{{ $residente['discapacidad'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

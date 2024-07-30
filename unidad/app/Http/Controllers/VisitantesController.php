@@ -70,8 +70,7 @@ class VisitantesController extends Controller
         }
     }
 
-
-
+   
 
     public function show(string $id)
     {

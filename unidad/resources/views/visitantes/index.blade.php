@@ -37,6 +37,7 @@
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
+                                    <th>Id</th>
                                     <th>Documento</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
@@ -46,10 +47,11 @@
                             <tbody>
                                 @foreach ($visitantes as $visitante)
                                     <tr>
+                                        <td>{{ $visitante['id'] }}</td>
                                         <td>{{ $visitante['documento_visitante'] }}</td>
                                         <td>{{ $visitante['nombre_visitante'] }}</td>
                                         <td>{{ $visitante['apellido_visitante'] }}</td>
-                                        <td>{{ $visitante['descripcion'] }}</td>
+                                        <td>{{ $visitante['descripcion'] }}</td>                               
                                     </tr>
                                 @endforeach
                             </tbody>

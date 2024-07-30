@@ -49,6 +49,7 @@ class ResidentesController extends Controller
         'apartamento' => 'required|string|max:255',
         'mascota' => 'nullable|string|max:255',
         'condicion' => 'nullable|string|max:255', 
+        'discapacidad' => 'nullable|string|max:255',
     ]);
 
     try {
@@ -66,7 +67,6 @@ class ResidentesController extends Controller
         return redirect()->route('residentes.create')->withErrors('Error al realizar la solicitud a la API.');
     }
 }
-
 
 
     

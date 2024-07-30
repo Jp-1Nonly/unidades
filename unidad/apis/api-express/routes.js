@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("./db");
 const twilio = require("twilio");
 
+
 router.get("/departamentos", (req, res) => {
   let sql = "SELECT * FROM departamentos";
   db.query(sql, (err, results) => {
@@ -36,7 +37,8 @@ router.get("/residentes", (req, res) => {
 });
 
 router.get("/visitantes", (req, res) => {
-    let sql = "SELECT documento_visitante,  nombre_visitante, apellido_visitante, descripcion FROM visitantes INNER JOIN tipospersonas ON visitantes.id_tipo_visitante=tipospersonas.id";
+    let sql = "SELECT visitantes.id, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, tipospersonas.descripcion FROM visitantes INNER JOIN tipospersonas ON visitantes.id_tipo_visitante = tipospersonas.id";
+
     db.query(sql, (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -46,6 +48,14 @@ router.get("/visitantes", (req, res) => {
 router.get("/personas", (req, res) => {
   let sql =
     "SELECT personas.documento, personas.nombre_persona, personas.apellido, personas.correo, personas.fecha_contratacion, cargos.nombre_cargo, departamentos.nombre_dpto FROM personas INNER JOIN cargos ON cargos.id=personas.cargo_id INNER JOIN departamentos ON departamentos.id=personas.departamento_id";
+  db.query(sql, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+router.get("/visitas", (req, res) => {
+  let sql =     "SELECT visitas.id, visitas.visitante_id, visitas.residente_id, visitas.fecha_ingreso, visitas.fecha_salida, visitas.motivo_visita, visitas.vehiculo, residentes.nombre, residentes.apellido, residentes.apartamento, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, visitantes.id_tipo_visitante FROM visitas LEFT JOIN residentes ON visitas.residente_id = residentes.id LEFT JOIN visitantes ON visitas.visitante_id = visitantes.id ORDER BY visitas.id DESC;";
   db.query(sql, (err, results) => {
     if (err) throw err;
     res.json(results);
@@ -133,7 +143,7 @@ router.post("/visitantesadd", (req, res) => {
 });
 
 router.post("/residentesadd", (req, res) => {
-  const { documento, nombre, apellido, edad, telefono, correo, apartamento, mascota, condicion } = req.body;
+  const { documento, nombre, apellido, edad, telefono, correo, apartamento, mascota, condicion, discapacidad } = req.body;
 
   // Verificar que los campos obligatorios no estén vacíos
   if (!documento || !nombre || !apellido || !edad || !apartamento) {
@@ -141,9 +151,9 @@ router.post("/residentesadd", (req, res) => {
   }
 
   // Inserción en la base de datos
-  let sql = "INSERT INTO `residentes`(`documento`, `nombre`, `apellido`, `edad`, `correo`, `telefono`, `apartamento`, `mascota`, `condicion`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+  let sql = "INSERT INTO `residentes`(`documento`, `nombre`, `apellido`, `edad`, `correo`, `telefono`, `apartamento`, `mascota`, `condicion`, `discapacidad`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
-  db.query(sql, [documento, nombre, apellido, edad, correo || null, telefono || null, apartamento, mascota || null, condicion || null], (err, result) => {
+  db.query(sql, [documento, nombre, apellido, edad, correo || null, telefono || null, apartamento, mascota || null, condicion || null, discapacidad || null], (err, result) => {
     if (err) {
       console.error("Error al insertar residente:", err);
       return res.status(500).json({ success: false, error: "Error al insertar residente" });
@@ -155,6 +165,36 @@ router.post("/residentesadd", (req, res) => {
     });
   });
 });
+
+
+
+
+router.post('/visitasadd', (req, res) => {
+  const { visitante_id, residente_id, fecha_ingreso, vehiculo, motivo_visita } = req.body;
+
+  // Verificar que los campos obligatorios no estén vacíos
+  if (!visitante_id || !residente_id || !motivo_visita) {
+      return res.status(400).json({ success: false, error: "Faltan parámetros obligatorios" });
+  }
+
+  // Inserción en la base de datos
+  let sql = "INSERT INTO `visitas`(`visitante_id`, `residente_id`, `fecha_ingreso`, `vehiculo`, `motivo_visita`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, now(), now())";
+  db.query(sql, [visitante_id, residente_id, fecha_ingreso || null, vehiculo || null, motivo_visita], (err, result) => {
+      if (err) {
+          console.error("Error al insertar visita:", err);
+          return res.status(500).json({ success: false, error: "Error al insertar visita" });
+      }
+      res.json({
+          success: true,
+          message: "Visita agregada",
+          residenteId: result.insertId,
+      });
+  });
+});
+
+module.exports = router;
+
+
 
 
 
