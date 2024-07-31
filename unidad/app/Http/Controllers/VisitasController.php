@@ -28,6 +28,66 @@ class VisitasController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $urlVisita = "https://ph.xn--oscarcaas-r6a.co/api/visitas/{$id}";
+        $urlVisitantes = 'https://ph.xn--oscarcaas-r6a.co/api/visitantes';
+        $urlResident = 'https://ph.xn--oscarcaas-r6a.co/api/residentes';
+    
+        // Obtener los detalles de la visita
+        $responseVisita = Http::get($urlVisita);
+        // Obtener la lista de visitantes
+        $responseVisitantes = Http::get($urlVisitantes);
+        // Obtener la lista de residentes
+        $responseResident = Http::get($urlResident);
+    
+        if ($responseVisita->successful() && $responseVisitantes->successful() && $responseResident->successful()) {
+            $visita = $responseVisita->json();
+            $visitantes = $responseVisitantes->json();
+            $residentes = $responseResident->json();
+    
+            return view('visitas.visitasedit', [
+                'visita' => $visita,
+                'visitantes' => $visitantes,
+                'residentes' => $residentes
+            ]);
+        } else {
+            return view('api.error', ['message' => 'Error al obtener los detalles de la visita']);
+        }
+    }
+    
+
+    // Actualizar la visita
+    public function update(Request $request, $id)
+    {
+        $url = "https://ph.xn--oscarcaas-r6a.co/api/visitas/{$id}";
+    
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
+            'visitante_id' => 'required|integer',
+            'residente_id' => 'required|integer',
+            'motivo_visita' => 'required|string|max:255',
+            'vehiculo' => 'nullable|string|max:10',
+            'fecha_ingreso' => 'required|date',
+        ]);
+    
+        // Establecer fecha_salida con el valor actual en la zona horaria de Bogotá
+        $validatedData['fecha_salida'] = now('America/Bogota')->format('Y-m-d\TH:i');
+    
+        // Registrar en los logs el valor de fecha_salida para depuración
+        Log::info('Fecha de salida: ' . $validatedData['fecha_salida']);
+    
+        // Realizar la solicitud PUT para actualizar los datos de la visita
+        $response = Http::put($url, $validatedData);
+    
+        if ($response->successful()) {
+            return redirect()->route('visitas.index')->with('success', 'Visita actualizada con éxito.');
+        } else {
+            return redirect()->route('visitas.visitasedit', $id)->withErrors('Error al actualizar la visita.');
+        }
+    }
+    
+
     public function create()
     {
         // Fetch visitantes data
@@ -110,15 +170,7 @@ class VisitasController extends Controller
     }
 }
 
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    
 
     public function destroy(string $id)
     {

@@ -46,7 +46,9 @@ Route::post('/residentesadd', [ResidentesController::class, 'store'])->name('res
 Route::get('/visitas', [VisitasController::class, 'index'])->name('visitas.index');
 Route::get('/visitas/create', [VisitasController::class, 'create'])->name('visitas.create');
 Route::post('visitasadd',[VisitasController::class, 'store'])->name('visitas.store');
-Route::get('/visitas/{visita}/edit', [VisitasController::class, 'edit'])->name('visitas.edit');
-Route::put('/visitas/{visita}', [VisitasController::class, 'update'])->name('visita.update');
+
+Route::get('visitas/{id}/edit', [VisitasController::class, 'edit'])->name('visitas.edit');
+Route::put('visitas/{id}', [VisitasController::class, 'update'])->name('visitas.update');
+
 
 require __DIR__.'/auth.php';

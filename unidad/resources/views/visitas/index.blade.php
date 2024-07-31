@@ -38,13 +38,13 @@
                         <thead>
                             <tr>
                                 <th>Doc. visitante</th>
-                                <th>Nombre visitante</th>
-                                <th>Apartamento</th>
+                                <th>visitante</th>
+                                <th>Apto</th>
                                 <th>Residente</th>
                                 <th>Motivo</th>
                                 <th>Ingreso</th>
                                 <th>Salida</th>
-                                <th>Acciones</th>
+                                <th>Dar salida</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,9 +57,14 @@
                                     <td>{{ $visita['motivo_visita'] }}</td>
                                     <td>{{ Carbon::parse($visita['fecha_ingreso'])->format('d-m-Y H:i:s') }}</td>
                                     <td>{{ $visita['fecha_salida'] ? Carbon::parse($visita['fecha_salida'])->format('d-m-Y H:i:s') : '' }}</td>
-                                    <td><a class="btn btn-danger btn-sm" href="{{ route('visitas.edit', $visita['id']) }}">
-                                        <i class="fas fa-sign-out-alt" style="color: rgb(255, 255, 255);"></i>
-                                    </a></td>
+                                    <td>
+                                        @if (empty($visita['fecha_salida']))
+                                            <a class="btn btn-danger btn-sm" href="{{ route('visitas.edit', $visita['id']) }}">
+                                                <i class="fas fa-sign-out-alt" style="color: rgb(255, 255, 255);"></i>
+                                            </a>
+                                        @endif
+                                    </td>
+                                                                                                           
                                 </tr>
                             @endforeach
                         </tbody>

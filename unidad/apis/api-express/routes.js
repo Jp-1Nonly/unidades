@@ -55,7 +55,7 @@ router.get("/personas", (req, res) => {
 });
 
 router.get("/visitas", (req, res) => {
-  let sql =     "SELECT visitas.id, visitas.visitante_id, visitas.residente_id, visitas.fecha_ingreso, visitas.fecha_salida, visitas.motivo_visita, visitas.vehiculo, residentes.nombre, residentes.apellido, residentes.apartamento, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, visitantes.id_tipo_visitante FROM visitas LEFT JOIN residentes ON visitas.residente_id = residentes.id LEFT JOIN visitantes ON visitas.visitante_id = visitantes.id ORDER BY visitas.id DESC;";
+  let sql =     "SELECT visitas.id, visitas.visitante_id, visitas.residente_id, visitas.fecha_ingreso, visitas.fecha_salida, visitas.motivo_visita, visitas.vehiculo, residentes.nombre, residentes.apellido, residentes.apartamento, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, visitantes.id_tipo_visitante FROM visitas LEFT JOIN residentes ON visitas.residente_id = residentes.id LEFT JOIN visitantes ON visitas.visitante_id = visitantes.id ORDER BY visitas.fecha_ingreso DESC;";
   db.query(sql, (err, results) => {
     if (err) throw err;
     res.json(results);
@@ -192,14 +192,27 @@ router.post('/visitasadd', (req, res) => {
   });
 });
 
+// Obtener detalles de una visita específica
+router.get("/visitas/:id", (req, res) => {
+  const { id } = req.params;
+  let sql = `SELECT visitas.id, visitas.visitante_id, visitas.residente_id, visitas.fecha_ingreso, visitas.fecha_salida, visitas.motivo_visita, visitas.vehiculo, residentes.nombre, residentes.apellido, residentes.apartamento, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, visitantes.id_tipo_visitante FROM visitas LEFT JOIN residentes ON visitas.residente_id = residentes.id LEFT JOIN visitantes ON visitas.visitante_id = visitantes.id WHERE visitas.id = ?`;
+  db.query(sql, [id], (err, result) => {
+    if (err) throw err;
+    res.json(result[0]);
+  });
+});
+
+// Actualizar una visita
+router.put("/visitas/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+  let sql = `UPDATE visitas SET ? WHERE id = ?`;
+  db.query(sql, [updatedData, id], (err, result) => {
+    if (err) throw err;
+    res.json({ message: "Visita actualizada con éxito" });
+  });
+});
+
+
 module.exports = router;
 
-
-
-
-
-
-
-
-
-module.exports = router;
