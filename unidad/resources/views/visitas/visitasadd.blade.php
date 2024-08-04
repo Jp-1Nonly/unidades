@@ -36,7 +36,7 @@
                                                 <option value="">Seleccione un visitante</option>
                                                 @foreach ($visitantes as $visitante)
                                                     <option value="{{ $visitante['id'] }}" {{ old('visitante_id') == $visitante['id'] ? 'selected' : '' }}>
-                                                        {{ $visitante['documento_visitante'] }} - {{ $visitante['nombre_visitante'] }} {{ $visitante['apellido_visitante'] }}
+                                                        {{ $visitante['documento_visitante'] }} - {{ $visitante['nombre_visitante'] }} {{ $visitante['apellido_visitante'] }} - {{ $visitante['descripcion'] }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -49,7 +49,12 @@
                                             <select name="residente_id" id="residente_id" class="form-control" required>
                                                 <option value="">Seleccione un residente</option>
                                                 @foreach ($residentes as $residente)
-                                                    <option value="{{ $residente['id'] }}">{{ $residente['apartamento'] }} - {{ $residente['nombre'] }} {{ $residente['apellido'] }}</option>
+                                                    <option value="{{ $residente['id'] }}">
+                                                        {{ $residente['apartamento'] }} - {{ $residente['nombre'] }} {{ $residente['apellido'] }}
+                                                        @if(isset($residente['id_tipo_persona']) && isset($tipos[$residente['id_tipo_persona']]))
+                                                            - {{ $tipos[$residente['id_tipo_persona']]['descripcion'] }}
+                                                        @endif
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -106,21 +111,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             var now = new Date();
             var year = now.getFullYear();
-            var month = ('0' + (now.getMonth() + 1)).slice(-2); // Los meses son basados en cero
+            var month = ('0' + (now.getMonth() + 1)).slice(-2);
             var day = ('0' + now.getDate()).slice(-2);
             var hours = ('0' + now.getHours()).slice(-2);
             var minutes = ('0' + now.getMinutes()).slice(-2);
-            
-            // Formatear la fecha y hora en el formato requerido
             var datetimeLocal = `${year}-${month}-${day}T${hours}:${minutes}`;
-            
-            // Establecer el valor del campo oculto
             document.getElementById('fecha_ingreso').value = datetimeLocal;
         });
 
         document.getElementById('confirmButton').addEventListener('click', function(event) {
             event.preventDefault();
             Swal.fire({
+                toast: 'true',
                 title: '¿Está seguro?',
                 text: "¡Desea guardar los datos de la visita!",
                 icon: 'warning',

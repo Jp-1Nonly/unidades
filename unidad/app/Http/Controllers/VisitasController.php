@@ -90,25 +90,30 @@ class VisitasController extends Controller
         }
     }
     
-
     public function create()
     {
-        // Fetch visitantes data
-        $visitantes = $this->fetchData('https://ph.xn--oscarcaas-r6a.co/api/visitantes');
-
+        // Obtener datos de la API de visitantes
+        $visitantesResponse = Http::get('https://ph.xn--oscarcaas-r6a.co/api/visitantes');
+        $visitantes = $visitantesResponse->json();
+    
+        // Ordenar visitantes por documento (si es necesario)
         $visitantes = $this->sortByDocumento($visitantes);
-
-        // Fetch residentes data
+    
+        // Obtener datos de residentes y tipos (ajusta según tu API)
         $residentes = $this->fetchData('https://ph.xn--oscarcaas-r6a.co/api/residentes');
-
-        // Ordenar residentes por apartamento
+        $tipos = $this->fetchData('https://ph.xn--oscarcaas-r6a.co/api/tipos');
+    
+        // Ordenar residentes por apartamento (si es necesario)
         $residentes = $this->sortByApartamento($residentes);
-
+    
         return view('visitas.visitasadd', [
             'visitantes' => $visitantes,
             'residentes' => $residentes,
+            'tipos' => $tipos,
         ]);
     }
+    
+
 
     
     private function fetchData($url)
