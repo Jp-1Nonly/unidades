@@ -43,7 +43,6 @@
                                         </div>
                                     </div>
                                     
-                                    
                                     <div class="form-group row">
                                         <label for="residente_id" class="col-form-label col-lg-4">Residente</label>
                                         <div class="col-lg-8">
@@ -55,19 +54,16 @@
                                             </select>
                                         </div>
                                     </div>
-                                   
-                                       
-                                        
-                                            <input class="form-control" id="fecha_ingreso" type="hidden" name="fecha_ingreso" placeholder="" >
-                                       
-                                    
-                                                                 
+
+                                    <input class="form-control" id="fecha_ingreso" type="hidden" name="fecha_ingreso" placeholder="" >
+
                                     <div class="form-group row">
                                         <label for="motivo_visita" class="col-form-label col-lg-4">Motivo</label>
                                         <div class="col-lg-8">
                                             <input class="form-control" id="motivo_visita" type="text" name="motivo_visita" placeholder="Ingrese motivo de la visita" required>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <label for="vehiculo" class="col-form-label col-lg-4">Vehículo</label>
                                         <div class="col-lg-8">
@@ -79,7 +75,7 @@
                             <hr>
                             <div class="form-group row mb-0">
                                 <div class="offset-lg-2 col-lg-8 text-lg-center">
-                                    <button class="btn btn-success btn-xs waves-effect waves-light mr-1" type="submit"><i class="mdi mdi-content-save-all"></i> Guardar</button>
+                                    <button class="btn btn-success btn-xs waves-effect waves-light mr-1" type="button" id="confirmButton"><i class="mdi mdi-content-save-all"></i> Guardar</button>
                                     <button class="btn btn-danger btn-xs waves-effect" type="button" onclick="window.location='{{ route('visitas.index') }}'"><i class="mdi mdi-close-box-outline"></i> Cancelar</button>
                                 </div>
                             </div>
@@ -120,6 +116,23 @@
             
             // Establecer el valor del campo oculto
             document.getElementById('fecha_ingreso').value = datetimeLocal;
+        });
+
+        document.getElementById('confirmButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: "¡Desea guardar los datos de la visita!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, guardar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('commentForm').submit();
+                }
+            });
         });
     </script>
 @endsection

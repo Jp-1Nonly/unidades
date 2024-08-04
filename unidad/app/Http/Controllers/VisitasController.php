@@ -20,6 +20,9 @@ class VisitasController extends Controller
             // Obtener el cuerpo de la respuesta como un array
             $visitas = $response->json();
 
+            // Ordenar los datos por 'id' de forma descendente
+            $visitas = collect($visitas)->sortByDesc('id')->values()->all();
+
             // Retornar la vista con los datos
             return view('visitas.index', ['visitas' => $visitas]);
         } else {
@@ -81,7 +84,7 @@ class VisitasController extends Controller
         $response = Http::put($url, $validatedData);
     
         if ($response->successful()) {
-            return redirect()->route('visitas.index')->with('success', 'Visita actualizada con éxito.');
+            return redirect()->route('visitas.index')->with('success', 'Hora de salida asignada con éxito.');
         } else {
             return redirect()->route('visitas.visitasedit', $id)->withErrors('Error al actualizar la visita.');
         }

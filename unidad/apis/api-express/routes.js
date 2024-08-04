@@ -55,7 +55,7 @@ router.get("/personas", (req, res) => {
 });
 
 router.get("/visitas", (req, res) => {
-  let sql =     "SELECT visitas.id, visitas.visitante_id, visitas.residente_id, visitas.fecha_ingreso, visitas.fecha_salida, visitas.motivo_visita, visitas.vehiculo, residentes.nombre, residentes.apellido, residentes.apartamento, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, visitantes.id_tipo_visitante FROM visitas LEFT JOIN residentes ON visitas.residente_id = residentes.id LEFT JOIN visitantes ON visitas.visitante_id = visitantes.id ORDER BY visitas.fecha_ingreso DESC;";
+  let sql =     "SELECT visitas.id, visitas.visitante_id, visitas.residente_id, visitas.fecha_ingreso, visitas.fecha_salida, visitas.motivo_visita, visitas.vehiculo, residentes.nombre, residentes.apellido, residentes.apartamento, visitantes.documento_visitante, visitantes.nombre_visitante, visitantes.apellido_visitante, visitantes.id_tipo_visitante FROM visitas LEFT JOIN residentes ON visitas.residente_id = residentes.id LEFT JOIN visitantes ON visitas.visitante_id = visitantes.id ORDER BY visitas.id DESC;";
   db.query(sql, (err, results) => {
     if (err) throw err;
     res.json(results);

@@ -5,7 +5,6 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
-           
                 <div class="page-title-right">
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="#">Tablero</a></li>
@@ -30,7 +29,6 @@
                             @csrf
                             <div class="row align-items-start">
                                 <div class="col-lg-6"> <!-- Columna izquierda -->
-                        
                                     <div class="form-group row">
                                         <label for="documento" class="col-form-label col-lg-4">Documento</label>
                                         <div class="col-lg-8">
@@ -61,19 +59,17 @@
                                             </select>
                                         </div>
                                     </div> 
-                                    
                                 </div>
-                              
                             </div>
                             <hr>
                             <div class="form-group row mb-0">
                                 <div class="offset-lg-2 col-lg-8 text-lg-center">
-                                    <button class="btn btn-success btn-xs waves-effect waves-light mr-1" type="submit"><i class="mdi mdi-content-save-all"></i> Guardar</button>
-                                    <button class="btn btn-danger btn-xs waves-effect" type="button"><i class="mdi mdi-close-box-outline"></i> Cancelar</button>
+                                    <button class="btn btn-success btn-xs waves-effect waves-light mr-1" type="button" id="confirmButton"><i class="mdi mdi-content-save-all"></i> Guardar</button>
+                                    <button class="btn btn-danger btn-xs waves-effect" type="button" onclick="window.location='{{ route('visitas.index') }}'"><i class="mdi mdi-close-box-outline"></i> Cancelar</button>
                                 </div>
                             </div>
                         </form>
-                        
+
                         @if (session('success'))
                             <div>
                                 {{ session('success') }}
@@ -98,4 +94,25 @@
         </div>
         <!-- col -->
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('confirmButton').addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "¡Desea guardar los datos del visitante!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, guardar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('commentForm').submit();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
