@@ -21,7 +21,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Ingresar datos</h3>
+                    <h3 class="card-title">Ingresar datos del nuevo visitante</h3>
                 </div>
                 <div class="card-body">
                     <div class="form">
@@ -49,7 +49,7 @@
                                         </div>
                                     </div> 
                                     <div class="form-group row">
-                                        <label for="tipo" class="col-form-label col-lg-4">Tipo de persona</label>
+                                        <label for="tipo" class="col-form-label col-lg-4">Descripción</label>
                                         <div class="col-lg-8">
                                             <select class="form-control" name="id_tipo_visitante" id="tipo" required>
                                                 <option value="" disabled selected>Elige un tipo</option>
@@ -100,6 +100,7 @@
             document.getElementById('confirmButton').addEventListener('click', function(event) {
                 event.preventDefault();
                 Swal.fire({
+                    toast: true,
                     title: '¿Está seguro?',
                     text: "¡Desea guardar los datos del visitante!",
                     icon: 'warning',

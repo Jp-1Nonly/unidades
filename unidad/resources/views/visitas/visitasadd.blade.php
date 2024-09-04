@@ -7,8 +7,8 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="#">Tablero</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('residentes.create') }}">Personas</a></li>
-                        <li class="breadcrumb-item active">Nuevo</li>
+                        <li class="breadcrumb-item"><a href="{{ route('visitas.index') }}">Visitas</a></li>
+                        <li class="breadcrumb-item active">Nueva Visita</li>
                     </ol>
                 </div>
                 <div class="clearfix"></div>
@@ -35,8 +35,8 @@
                                             <select name="visitante_id" id="visitante_id" class="form-control" required>
                                                 <option value="">Seleccione un visitante</option>
                                                 @foreach ($visitantes as $visitante)
-                                                    <option value="{{ $visitante['id'] }}" {{ old('visitante_id') == $visitante['id'] ? 'selected' : '' }}>
-                                                        {{ $visitante['documento_visitante'] }} - {{ $visitante['nombre_visitante'] }} {{ $visitante['apellido_visitante'] }} - {{ $visitante['descripcion'] }}
+                                                    <option value="{{ $visitante->id }}" {{ old('visitante_id') == $visitante->id ? 'selected' : '' }}>
+                                                        {{ $visitante->documento_visitante }} - {{ $visitante->nombre_visitante }} {{ $visitante->apellido_visitante }} - {{ $visitante->descripcion }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -49,11 +49,12 @@
                                             <select name="residente_id" id="residente_id" class="form-control" required>
                                                 <option value="">Seleccione un residente</option>
                                                 @foreach ($residentes as $residente)
-                                                    <option value="{{ $residente['id'] }}">
-                                                        {{ $residente['apartamento'] }} - {{ $residente['nombre'] }} {{ $residente['apellido'] }}
-                                                        @if(isset($residente['id_tipo_persona']) && isset($tipos[$residente['id_tipo_persona']]))
-                                                            - {{ $tipos[$residente['id_tipo_persona']]['descripcion'] }}
-                                                        @endif
+                                                    <option value="{{ $residente->id }}">
+                                                        {{ $residente->apartamento }} - {{ $residente->nombre }} {{ $residente->apellido }}
+                                                        @php
+                                                            $tipoDescripcion = $tipos->firstWhere('id', $residente->id_tipo_persona)->descripcion ?? '';
+                                                        @endphp
+                                                        - {{ $tipoDescripcion }}
                                                     </option>
                                                 @endforeach
                                             </select>

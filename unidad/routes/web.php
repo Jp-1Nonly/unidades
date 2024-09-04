@@ -3,10 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartamentosController;
-use App\Http\Controllers\PersonasController;
+
 use App\Http\Controllers\ResidentesController;
 use App\Http\Controllers\VisitantesController;
 use App\Http\Controllers\VisitasController;
+use App\Http\Controllers\PersonasController;
+
+
 
 Route::get('/', function () {
     return view('welcome');

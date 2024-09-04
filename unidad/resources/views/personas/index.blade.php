@@ -52,8 +52,8 @@
                             <td>{{ $persona['apellido'] }}</td>
                             <td>{{ $persona['correo'] }}</td>
                             <td>{{ \Carbon\Carbon::parse($persona['fecha_contratacion'])->format('d/m/Y') }}</td>
-                            <td>{{ $persona['nombre_cargo'] }}</td>
-                            <td>{{ $persona['nombre_dpto'] }}</td>
+                            <td>{{ $persona['cargo_nombre'] }}</td>
+                            <td>{{ $persona['departamento_nombre'] }}</td>
                         </tr>
                         @endforeach
                     </tbody>

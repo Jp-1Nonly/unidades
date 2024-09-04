@@ -53,26 +53,26 @@
                                     <tbody>
                                         @foreach ($visitas as $visita)
                                             <tr>
-                                                <td>{{ $visita['id'] }}</td>
-                                                <td>{{ $visita['documento_visitante'] }}</td>
-                                                <td>{{ $visita['nombre_visitante'] . ' ' . $visita['apellido_visitante'] }}</td>
-                                                <td>{{ $visita['vehiculo'] }}</td>
-                                                <td>{{ $visita['apartamento'] }}</td>
-                                                <td>{{ $visita['nombre'] . ' ' . $visita['apellido'] }}</td>
-                                                <td>{{ $visita['motivo_visita'] }}</td>
+                                                <td>{{ $visita->id }}</td>
+                                                <td>{{ $visita->documento_visitante }}</td>
+                                                <td>{{ $visita->nombre_visitante . ' ' . $visita->apellido_visitante }}</td> <!-- Verifica esta línea -->
+                                                <td>{{ $visita->vehiculo }}</td>
+                                                <td>{{ $visita->apartamento }}</td>
+                                                <td>{{ $visita->nombre . ' ' . $visita->apellido }}</td>
+                                                <td>{{ $visita->motivo_visita }}</td>
                                                 <td>
-                                                    {{ Carbon::parse($visita['fecha_ingreso'])
+                                                    {{ Carbon::parse($visita->fecha_ingreso)
                                                     ->setTimezone('America/Bogota')
                                                     ->format('d-m-Y H:i:s') }}
                                                 </td>
                                                 <td>
-                                                    {{ $visita['fecha_salida'] ? Carbon::parse($visita['fecha_salida'])
+                                                    {{ $visita->fecha_salida ? Carbon::parse($visita->fecha_salida)
                                                     ->setTimezone('America/Bogota')
                                                     ->format('d-m-Y H:i:s') : '' }}
                                                 </td>
                                                 <td>
-                                                    @if (empty($visita['fecha_salida']))
-                                                        <a href="{{ route('visitas.edit', $visita['id']) }}">
+                                                    @if (empty($visita->fecha_salida))
+                                                        <a href="{{ route('visitas.edit', $visita->id) }}">
                                                             <i class="fas fa-sign-out-alt" style="color: rgb(248, 6, 6);"></i>
                                                         </a>
                                                     @endif
@@ -80,6 +80,9 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    
+                                    
+                                    
                                 </table>
                             </div>
                         </div>

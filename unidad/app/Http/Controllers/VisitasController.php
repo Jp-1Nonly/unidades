@@ -2,109 +2,98 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Visita;
+use App\Models\Visitante;
+use App\Models\Residente;
+use App\Models\Tipopersona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class VisitasController extends Controller
 {
     public function index()
     {
-        $url = 'https://ph.xn--oscarcaas-r6a.co/api/visitas';
-
-        // Realizar la solicitud GET
-        $response = Http::get($url);
-
-        // Verificar el estado de la respuesta
-        if ($response->successful()) {
-            // Obtener el cuerpo de la respuesta como un array
-            $visitas = $response->json();
-
-            // Ordenar los datos por 'id' de forma descendente
-            $visitas = collect($visitas)->sortByDesc('id')->values()->all();
-
-            // Retornar la vista con los datos
-            return view('visitas.index', ['visitas' => $visitas]);
-        } else {
-            // Manejar el error
-            return view('api.error', ['message' => 'Error al consumir la API']);
-        }
+        // Consulta SQL personalizada utilizando el constructor de consultas
+        $visitas = DB::select("
+            SELECT 
+                visitas.id,  -- Seleccionar el campo 'id' de la tabla 'visitas'
+                visitantes.documento_visitante, 
+                visitantes.nombre_visitante, 
+                visitantes.apellido_visitante,  -- Asegurarse de que este campo está seleccionado
+                residentes.nombre, 
+                residentes.apellido, 
+                residentes.apartamento,  -- Asegúrate de incluir este campo
+                visitas.motivo_visita, 
+                visitas.vehiculo, 
+                visitas.fecha_ingreso, 
+                visitas.fecha_salida 
+            FROM visitas 
+            INNER JOIN visitantes ON visitas.visitante_id = visitantes.id
+            INNER JOIN residentes ON visitas.residente_id = residentes.id
+            ORDER BY visitas.id DESC
+        ");
+    
+        // Retornar la vista con los datos de las visitas
+        return view('visitas.index', ['visitas' => $visitas]);
     }
+    
+
 
     public function edit($id)
     {
-        $urlVisita = "https://ph.xn--oscarcaas-r6a.co/api/visitas/{$id}";
-        $urlVisitantes = 'https://ph.xn--oscarcaas-r6a.co/api/visitantes';
-        $urlResident = 'https://ph.xn--oscarcaas-r6a.co/api/residentes';
-    
         // Obtener los detalles de la visita
-        $responseVisita = Http::get($urlVisita);
-        // Obtener la lista de visitantes
-        $responseVisitantes = Http::get($urlVisitantes);
-        // Obtener la lista de residentes
-        $responseResident = Http::get($urlResident);
-    
-        if ($responseVisita->successful() && $responseVisitantes->successful() && $responseResident->successful()) {
-            $visita = $responseVisita->json();
-            $visitantes = $responseVisitantes->json();
-            $residentes = $responseResident->json();
-    
-            return view('visitas.visitasedit', [
-                'visita' => $visita,
-                'visitantes' => $visitantes,
-                'residentes' => $residentes
-            ]);
-        } else {
-            return view('api.error', ['message' => 'Error al obtener los detalles de la visita']);
-        }
-    }
-    
+        $visita = Visita::findOrFail($id);
 
-    // Actualizar la visita
+        // Obtener la lista de todos los visitantes y residentes
+        $visitantes = Visitante::all();
+        $residentes = Residente::all();
+
+        return view('visitas.visitasedit', [
+            'visita' => $visita,
+            'visitantes' => $visitantes,
+            'residentes' => $residentes
+        ]);
+    }
+
     public function update(Request $request, $id)
     {
-        $url = "https://ph.xn--oscarcaas-r6a.co/api/visitas/{$id}";
-    
         // Validar los datos del formulario
         $validatedData = $request->validate([
-            'visitante_id' => 'required|integer',
-            'residente_id' => 'required|integer',
+            'visitante_id' => 'required|integer|exists:visitantes,id',
+            'residente_id' => 'required|integer|exists:residentes,id',
             'motivo_visita' => 'required|string|max:255',
             'vehiculo' => 'nullable|string|max:10',
             'fecha_ingreso' => 'required|date',
         ]);
     
-        // Establecer fecha_salida con el valor actual en la zona horaria de Bogotá
-        $validatedData['fecha_salida'] = now('America/Bogota')->format('Y-m-d\TH:i');
+        try {
+            // Encontrar la visita por ID
+            $visita = Visita::findOrFail($id);
     
-        // Registrar en los logs el valor de fecha_salida para depuración
-        Log::info('Fecha de salida: ' . $validatedData['fecha_salida']);
+            // Establecer la fecha y hora de salida actual en la zona horaria de Bogotá
+            $visita->fecha_salida = now('America/Bogota');
     
-        // Realizar la solicitud PUT para actualizar los datos de la visita
-        $response = Http::put($url, $validatedData);
+            // Actualizar la visita en la base de datos
+            $visita->update($validatedData + ['fecha_salida' => $visita->fecha_salida]);
     
-        if ($response->successful()) {
             return redirect()->route('visitas.index')->with('success', 'Hora de salida asignada con éxito.');
-        } else {
-            return redirect()->route('visitas.visitasedit', $id)->withErrors('Error al actualizar la visita.');
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar la visita:', ['error' => $e->getMessage()]);
+            return redirect()->route('visitas.edit', $id)->withErrors('Error al actualizar la visita.');
         }
     }
     
+
+
     public function create()
     {
-        // Obtener datos de la API de visitantes
-        $visitantesResponse = Http::get('https://ph.xn--oscarcaas-r6a.co/api/visitantes');
-        $visitantes = $visitantesResponse->json();
-    
-        // Ordenar visitantes por documento (si es necesario)
-        $visitantes = $this->sortByDocumento($visitantes);
-    
-        // Obtener datos de residentes y tipos (ajusta según tu API)
-        $residentes = $this->fetchData('https://ph.xn--oscarcaas-r6a.co/api/residentes');
-        $tipos = $this->fetchData('https://ph.xn--oscarcaas-r6a.co/api/tipos');
-    
-        // Ordenar residentes por apartamento (si es necesario)
-        $residentes = $this->sortByApartamento($residentes);
+        // Obtener datos de la base de datos
+        $visitantes = Visitante::orderBy('documento_visitante')->get();
+        $residentes = Residente::orderBy('apartamento')->get();
+        $tipos = Tipopersona::all(); // Asegúrate de que el nombre del modelo es correcto
     
         return view('visitas.visitasadd', [
             'visitantes' => $visitantes,
@@ -114,74 +103,51 @@ class VisitasController extends Controller
     }
     
 
-
-    
-    private function fetchData($url)
-    {
-        $response = Http::get($url);
-
-        if ($response->successful()) {
-            return $response->json();
-        } else {
-           
-            Log::error('Failed to fetch data from ' . $url, ['status' => $response->status()]);
-            return []; 
-        }
-    }
-
-    private function sortByApartamento(array $residentes)
-    {
-        usort($residentes, function($a, $b) {
-            return strcmp($a['apartamento'], $b['apartamento']);
-        });
-
-        return $residentes;
-    }
-
-    private function sortByDocumento(array $visitantes)
-    {
-        usort($visitantes, function($a, $b) {
-            return strcmp($a['documento_visitante'], $b['documento_visitante']);
-        });
-
-        return $visitantes;
-    }
-
     public function store(Request $request)
 {
+    // Registrar los datos del formulario para depuración
     Log::info('Datos del formulario recibidos:', $request->all());
 
+    // Validar los datos del formulario
     $validatedData = $request->validate([
-        'visitante_id' => 'required|integer',
-        'residente_id' => 'required|integer',
+        'visitante_id' => 'required|integer|exists:visitantes,id',
+        'residente_id' => 'required|integer|exists:residentes,id',
         'fecha_ingreso' => 'nullable|date',
         'motivo_visita' => 'required|string|max:255',
         'vehiculo' => 'nullable|string|max:10',
     ]);
 
+    try {
+        // Crear una nueva visita en la base de datos
+        Visita::create([
+            'visitante_id' => $validatedData['visitante_id'],
+            'residente_id' => $validatedData['residente_id'],
+            'fecha_ingreso' => $validatedData['fecha_ingreso'],
+            'motivo_visita' => $validatedData['motivo_visita'],
+            'vehiculo' => $validatedData['vehiculo'],
+        ]);
 
-    Log::info('Datos validados con fecha:', $validatedData);
-
-    $response = Http::post('https://ph.xn--oscarcaas-r6a.co/api/visitasadd', $validatedData);
-
-    Log::info('Respuesta de la API:', [
-        'status' => $response->status(),
-        'body' => $response->body()
-    ]);
-
-    if ($response->successful()) {
+        // Redirigir con mensaje de éxito
         return redirect()->route('visitas.index')->with('success', 'Visita agregada con éxito.');
-    } else {
-        $error = $response->json('error', 'Error desconocido');
-        $errorMessage = $response->json('message', 'Error desconocido');
-        return redirect()->route('visitas.create')->withErrors('Error al agregar la visita ' . $error . ' - ' . $errorMessage);
+    } catch (\Exception $e) {
+        // Registrar el error y redirigir con mensaje de error
+        Log::error('Error al agregar la visita:', ['error' => $e->getMessage()]);
+        return redirect()->route('visitas.create')->withErrors('Error al agregar la visita.');
     }
 }
 
-    
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            // Eliminar la visita de la base de datos
+            $visita = Visita::findOrFail($id);
+            $visita->delete();
+
+            return redirect()->route('visitas.index')->with('success', 'Visita eliminada con éxito.');
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar la visita:', ['error' => $e->getMessage()]);
+            return redirect()->route('visitas.index')->withErrors('Error al eliminar la visita.');
+        }
     }
 }

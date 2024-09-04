@@ -51,7 +51,7 @@
                                         <td>{{ $visitante['documento_visitante'] }}</td>
                                         <td>{{ $visitante['nombre_visitante'] }}</td>
                                         <td>{{ $visitante['apellido_visitante'] }}</td>
-                                        <td>{{ $visitante['descripcion'] }}</td>                               
+                                        <td>{{ $visitante['tipo_descripcion'] }}</td>                               
                                     </tr>
                                 @endforeach
                             </tbody>
