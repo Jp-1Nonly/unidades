@@ -99,6 +99,10 @@
              
         @endpush
     @endif
+  
+   
+@endsection
+@push('scripts')
     <script>
         $(document).ready(function() {
             // Destruye cualquier instancia existente de DataTables en la tabla
@@ -112,5 +116,4 @@
             });
         });
     </script>
-   
-@endsection
+@endpush
