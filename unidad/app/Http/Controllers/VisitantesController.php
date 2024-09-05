@@ -7,37 +7,74 @@ use App\Models\Visitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 
 class VisitantesController extends Controller
 {
     public function index()
     {
-        // Obtener todos los visitantes junto con el tipo de visitante desde la base de datos
-        $visitantes = Visitante::join('tipospersonas', 'visitantes.id_tipo_visitante', '=', 'tipospersonas.id')
-            ->select('visitantes.*', 'tipospersonas.descripcion as tipo_descripcion') // Selecciona todas las columnas de visitantes y la descripción del tipo
-            ->get();
-    
+        // Consulta SQL personalizada utilizando el constructor de consultas
+        $visitantes = DB::select("
+            SELECT 
+                visitantes.id, 
+                visitantes.documento_visitante, 
+                visitantes.nombre_visitante, 
+                visitantes.apellido_visitante, 
+                tipospersonas.descripcion as tipo_descripcion,
+                visitantes.captura
+            FROM visitantes
+            INNER JOIN tipospersonas ON visitantes.id_tipo_visitante = tipospersonas.id
+            ORDER BY visitantes.id DESC
+        ");
+
         // Retornar la vista con los datos de los visitantes
         return view('visitantes.index', ['visitantes' => $visitantes]);
     }
     
+    
+    
     public function store(Request $request)
 {
-    // Validación de los datos del formulario
-    $validatedData = $request->validate([
-        'documento_visitante' => 'required|string|max:20',
-        'nombre_visitante' => 'required|string|max:100',
-        'apellido_visitante' => 'required|string|max:100',
+    // Validar los datos
+    $request->validate([
+        'documento_visitante' => 'required|string',
+        'nombre_visitante' => 'required|string',
+        'apellido_visitante' => 'required|string',
         'id_tipo_visitante' => 'required|integer',
+        'captura' => 'required|string',  // Agregar validación para la captura de foto
     ]);
 
-    // Crear un nuevo visitante en la base de datos
-    Visitante::create($validatedData);
+    // Guardar los datos del visitante
+    $visitante = new Visitante();
+    $visitante->documento_visitante = $request->input('documento_visitante');
+    $visitante->nombre_visitante = $request->input('nombre_visitante');
+    $visitante->apellido_visitante = $request->input('apellido_visitante');
+    $visitante->id_tipo_visitante = $request->input('id_tipo_visitante');
+    
+    // Procesar la captura de foto
+    if ($request->filled('captura')) {
+        $imagenBase64 = $request->input('captura');
+        
+        // Asegúrate de que el base64 es válido y solo tiene la parte de datos de imagen
+        if (strpos($imagenBase64, 'data:image/png;base64,') === 0) {
+            $imagenCodificada = str_replace('data:image/png;base64,', '', $imagenBase64);
+        } else {
+            return redirect()->back()->withErrors(['msg' => 'Formato de imagen no válido.']);
+        }
 
-    // Redireccionar a la vista de index con un mensaje de éxito
-    return redirect()->route('visitantes.index')->with('success', 'Visitante agregado con éxito');
+        // Almacena la imagen en formato base64 en el campo 'captura'
+        $visitante->captura = $imagenCodificada;
+    }
+
+    // Guardar visitante en la base de datos
+    $visitante->save();
+
+    return redirect()->route('visitantes.index')->with('success', 'Visitante registrado exitosamente con foto.');
 }
+
+    
 public function create()
 {
     // Obtener los tipos de visitantes de la base de datos

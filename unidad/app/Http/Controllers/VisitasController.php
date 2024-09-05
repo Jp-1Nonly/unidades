@@ -105,35 +105,26 @@ class VisitasController extends Controller
 
     public function store(Request $request)
 {
-    // Registrar los datos del formulario para depuración
-    Log::info('Datos del formulario recibidos:', $request->all());
+    date_default_timezone_set("America/Bogota");
 
-    // Validar los datos del formulario
-    $validatedData = $request->validate([
-        'visitante_id' => 'required|integer|exists:visitantes,id',
-        'residente_id' => 'required|integer|exists:residentes,id',
-        'fecha_ingreso' => 'nullable|date',
+    // Validar los datos
+    $request->validate([
+        'visitante_id' => 'required|exists:visitantes,id',
+        'residente_id' => 'required|exists:residentes,id',
         'motivo_visita' => 'required|string|max:255',
-        'vehiculo' => 'nullable|string|max:10',
+        'vehiculo' => 'nullable|string|max:50',
     ]);
 
-    try {
-        // Crear una nueva visita en la base de datos
-        Visita::create([
-            'visitante_id' => $validatedData['visitante_id'],
-            'residente_id' => $validatedData['residente_id'],
-            'fecha_ingreso' => $validatedData['fecha_ingreso'],
-            'motivo_visita' => $validatedData['motivo_visita'],
-            'vehiculo' => $validatedData['vehiculo'],
-        ]);
+    // Crear una nueva visita
+    $visita = new Visita();
+    $visita->visitante_id = $request->visitante_id;
+    $visita->residente_id = $request->residente_id;
+    $visita->motivo_visita = $request->motivo_visita;
+    $visita->vehiculo = $request->vehiculo;
+    $visita->fecha_ingreso = now(); // Usar la fecha y hora actual
+    $visita->save();
 
-        // Redirigir con mensaje de éxito
-        return redirect()->route('visitas.index')->with('success', 'Visita agregada con éxito.');
-    } catch (\Exception $e) {
-        // Registrar el error y redirigir con mensaje de error
-        Log::error('Error al agregar la visita:', ['error' => $e->getMessage()]);
-        return redirect()->route('visitas.create')->withErrors('Error al agregar la visita.');
-    }
+    return redirect()->route('visitas.index')->with('success', 'Visita registrada exitosamente.');
 }
 
 

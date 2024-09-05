@@ -9,7 +9,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="#">Tablero</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('visitantes.create') }}">visitantes</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('visitantes.create') }}">Visitantes</a></li>
                         <li class="breadcrumb-item active">Listado</li>
                     </ol>
                 </div>
@@ -19,22 +19,16 @@
     </div>
     <!-- end page title -->
 
-
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-
-                    <a href="{{ route('visitantes.create') }}" class="btn btn-danger btn-xs"><i
-                            class="mdi mdi-account-multiple"></i> Nuevo</a>
+                    <a href="{{ route('visitantes.create') }}" class="btn btn-danger btn-xs"><i class="mdi mdi-account-multiple"></i> Nuevo</a>
                 </div>
 
-
                 <div class="card-body">
-
                     @if (count($visitantes) > 0)
-                        <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -42,16 +36,24 @@
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Descripción</th>
+                                    <th>Foto</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($visitantes as $visitante)
                                     <tr>
-                                        <td>{{ $visitante['id'] }}</td>
-                                        <td>{{ $visitante['documento_visitante'] }}</td>
-                                        <td>{{ $visitante['nombre_visitante'] }}</td>
-                                        <td>{{ $visitante['apellido_visitante'] }}</td>
-                                        <td>{{ $visitante['tipo_descripcion'] }}</td>                               
+                                        <td>{{ $visitante->id }}</td>
+                                        <td>{{ $visitante->documento_visitante }}</td>
+                                        <td>{{ $visitante->nombre_visitante }}</td>
+                                        <td>{{ $visitante->apellido_visitante }}</td>
+                                        <td>{{ $visitante->tipo_descripcion }}</td> 
+                                        <td>
+                                            @if($visitante->captura)
+                                                <div>
+                                                    <img src="data:image/png;base64,{{ $visitante->captura }}" alt="Foto del Visitante" width="150">
+                                                </div>
+                                            @endif
+                                        </td>                              
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -59,43 +61,56 @@
                     @else
                         <p>No hay visitantes para mostrar.</p>
                     @endif
-
-
                 </div>
             </div>
         </div>
-
     </div>
-    @if (session('success'))
-@push('scripts')
-    <script>
-        Swal.fire({
-            position: "top-end",
-            toast: 'true',
-            icon: 'success',
-            text: '{{ session('success') }}',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    </script>
-@endpush
-@endif
 
-@if ($errors->any())
-@push('scripts')
+    @if (session('success'))
+        @push('scripts')
+            <script>
+                Swal.fire({
+                    position: "top-end",
+                    toast: true,
+                    icon: 'success',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            </script>
+        @endpush
+    @endif
+
+    @if ($errors->any())
+        @push('scripts')
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: `
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    `
+                });
+            </script>
+             
+        @endpush
+    @endif
     <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            html: `
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            `
+        $(document).ready(function() {
+            // Destruye cualquier instancia existente de DataTables en la tabla
+            if ($.fn.DataTable.isDataTable('#datatable')) {
+                $('#datatable').DataTable().destroy();
+            }
+
+            // Inicializa DataTables en la tabla
+            $('#datatable').DataTable({
+                "order": [[0, "desc"]] // Ordena por la primera columna (Id) en orden descendente
+            });
         });
     </script>
-@endpush
-@endif
+   
 @endsection
