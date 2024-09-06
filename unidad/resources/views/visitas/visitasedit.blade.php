@@ -121,6 +121,7 @@
 document.getElementById('confirmButton').addEventListener('click', function(event) {
     event.preventDefault();
     Swal.fire({
+        toast:true,
         title: '¿Está seguro?',
         text: "¡No podrá revertir esto!",
         icon: 'warning',

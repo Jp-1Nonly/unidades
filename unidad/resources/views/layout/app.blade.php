@@ -27,6 +27,7 @@
     <link href="{{ asset('assets/libs/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables/scroller.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
 
 
@@ -180,7 +181,18 @@
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li><a href="{{ url('/visitantes') }}"><i class="mdi mdi-account-multiple" ></i> Visitantes</a></li>
-                                <li><a href="{{ url('/visitas') }}"><i class="far fa-address-book"></i> Listado</a></li>                              
+                                <li><a href="{{ url('/visitas') }}"><i class="far fa-address-book"></i> Lista de visitas</a></li>                              
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="waves-effect">
+                                <i class=" mdi mdi-calendar" style="color: red;"></i>
+                                <span> Pedidos </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="nav-second-level" aria-expanded="false">
+                                
+                                <li><a href="{{ url('/pedidos') }}"><i class="far fa-address-book"></i> Lista de pedidos</a></li>                              
                             </ul>
                         </li>
                        

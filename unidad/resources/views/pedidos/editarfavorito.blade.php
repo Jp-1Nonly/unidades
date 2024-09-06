@@ -1,0 +1,115 @@
+@extends('layoutsuse.app')
+
+@section('content')
+<main>
+    <div class="container-fluid px-4">
+        <h5 class="mt-4">Pedidos</h5>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Editar pedido</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fa-solid fa-pencil orange_color"></i>
+                Editar pedido N° {{ $pedido->id }}
+            </div>
+            <div class="card-body">
+                <form id="editPedidoForm" action="{{ route('update.favorito', $pedido->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group">
+                        <div class="mt-4">
+                            <h6>Ingrese el nombre del taller</h6>
+                            <input class="form-control" type="text" name="taller" value="{{ $pedido->taller }}" required>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h6>Selecciona ficha</h6>
+                            <select name="ficha" id="ficha" class="form-control">
+                                @foreach ($fichas as $ficha)
+                                    @php
+                                        $fecha_fin = \Carbon\Carbon::parse($ficha->f_fin);
+                                        $diferencia_dias = \Carbon\Carbon::now()->diffInDays($fecha_fin);
+                                        $diferencia_dias = $fecha_fin->isPast() ? -$diferencia_dias : $diferencia_dias;
+                                    @endphp
+                                    <option value="{{ $ficha->id }}" {{ $ficha->id == $pedido->ficha_id ? 'selected' : '' }}>
+                                        {{ $ficha->ficha }} - {{ $ficha->nombre }} - Días para terminar la ficha: {{ intval($diferencia_dias) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profesor"><h6>Nombre del Instructor</h6></label>
+                        <select name="profesor" id="profesor" class="form-control">
+                            @foreach ($profesores as $profesor)
+                                <option value="{{ $profesor->id }}" {{ $profesor->id == $pedido->profesor_id ? 'selected' : '' }}>
+                                    {{ $profesor->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area_id"><h6>Población</h6></label>
+                        <select class="form-control" id="area_id" name="area_id">
+                            @foreach($areas as $area)
+                                <option value="{{ $area->id }}" {{ $pedido->area_id == $area->id ? 'selected' : '' }}>
+                                    {{ $area->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado"><h6>Estado del pedido</h6></label>
+                        <select id="estado" name="estado" class="form-control">
+                            <option value="Enviado" {{ $pedido->estado == 'Enviado' ? 'selected' : '' }}>Enviado</option>
+                            <option value="Pagado" {{ $pedido->estado == 'Pagado' ? 'selected' : '' }}>Pagado</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4">
+                        <h6>Observaciones</h6>
+                        <input class="form-control" type="text" name="observaciones" value="{{ $pedido->observaciones }}">
+                    </div>
+
+                    <h5 class="mt-4">Detalles del Pedido</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($detallesPedido as $detalle)
+                                <tr>
+                                    <td>{{ $detalle->producto->id }}</td>
+                                    <td>{{ $detalle->producto->nombre }}</td>
+                                    <td>
+                                        <input type="number" name="productos[{{ $detalle->id }}][cantidad]" class="form-control" value="{{ $detalle->cantidad }}" step="0.1" min="0">
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('detallepedidosfavoritos.delete', ['id' => $detalle->id]) }}" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash-can"></i> 
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-regular fa-floppy-disk"></i> Guardar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+@endsection

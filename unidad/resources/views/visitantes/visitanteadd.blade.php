@@ -33,14 +33,14 @@
                                 <div class="form-group row">
                                     <label for="captura" class="col-form-label col-lg-4">Captura de Foto</label>
                                     <div class="col-lg-8">
-                                        <video id="video" width="320" height="240" autoplay></video>
+                                        <video id="video" width="240" height="160" autoplay></video>
                                         <canvas id="canvas" style="display:none;"></canvas>
                                         <div>
                                             <button type="button" id="takePhoto" class="btn btn-primary btn-xs">Tomar
                                                 Foto</button>
                                         </div>
                                         <input type="hidden" id="captura" name="captura"><br>
-                                        <p>Primero toma la foto para seguir con los demás datos</p>
+                                       
                                     </div>
                                 </div>
                                 <hr>
@@ -49,11 +49,13 @@
                                     <div class="form-group row">
                                         <label for="documento" class="col-form-label col-lg-4">Documento</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" id="documento_visitante" type="text"
-                                                name="documento_visitante" placeholder="Ingresa el documento"
-                                                aria-required="true" required>
+                                            <input class="form-control" id="documento_visitante" type="text" name="documento_visitante"
+                                                   placeholder="Ingresa el documento" aria-required="true" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                         </div>
                                     </div>
+                                    
+                                    
+                                    
                                     <div class="form-group row">
                                         <label for="nombre_visitante" class="col-form-label col-lg-4">Nombre</label>
                                         <div class="col-lg-8">
