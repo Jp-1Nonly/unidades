@@ -193,20 +193,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><label>Ficha:</label>
-                                    <p>{{ $pedido->ficha->ficha }}</p>
-                                </td>
-                                <td><label>Programa:</label>
-                                    <p>{{ $pedido->ficha->nombre }}</p>
-                                </td>
+                               
                             </tr>
                             <tr>
-                                <td><label>F. inicio:</label>
-                                    <p>{{ $pedido->ficha->f_inicio }}</p>
-                                </td>
-                                <td><label>Fecha fin:</label>
-                                    <p>{{ $pedido->ficha->f_fin }}</p>
-                                </td>
+                             
                             </tr>
                             <tr>
                                 <td><label>Area:</label>

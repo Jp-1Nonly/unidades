@@ -28,21 +28,7 @@
 
             <div class="card-body">
                 <!-- Mostrar el saldo Ficha -->
-                <div class="mt-4">
-                    <h6>Formulario de cálculo de saldo</h6>
-                    <form action="{{ route('productos.saldoarea') }}" method="POST" class="form">
-                        @csrf
-                        <div class="form-group">
-                            <label for="area_id">Selecciona un área:</label>
-                            <select class="form-control" id="area_id" name="area_id">
-                                @foreach ($areas as $area)
-                                    <option value="{{ $area->id }}">{{ $area->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Calcular Saldo</button>
-                    </form>
-                    
+                
                 </div>
             </div>
         </div>

@@ -17,12 +17,7 @@
                         <h6>Ingrese el nombre del taller</h6>
                         <input class="form-control" type="text" name="taller" value="{{ $pedido->taller }}" required>
                     </div>
-                    <div class="form-group">
-                        <label for="ficha">Número de Ficha</label>
-                        <select class="form-control" id="ficha" name="ficha" readonly>
-                            <option value="{{ $pedido->ficha->id }}" selected>{{ $pedido->ficha->ficha }}</option>
-                        </select>
-                    </div>
+                   
                     
                     
                     <div class="form-group">
@@ -48,12 +43,9 @@
                         </select>
                     </div>
                     
+                  
                     <div class="form-group">
-                        <label for="ficha">Observaciones</label>
-                        <input class="form-control" id="ficha" name="ficha" type="text" value="{{ $pedido->observaciones }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="ficha">Estado</label>
+                        <label for="estado">Estado</label>
                         <input class="form-control" id="estado" name="estado" type="text" value="Enviado" readonly>
                     </div>
                    

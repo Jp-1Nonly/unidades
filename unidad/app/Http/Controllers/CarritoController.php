@@ -6,7 +6,7 @@ use App\Models\DetallePedidoFavorito;
 use App\Models\PedidoFavorito;
 use Illuminate\Http\Request;
 use App\Models\DetallePedido;
-use App\Models\Ficha;
+
 use App\Models\Proveedor;
 use App\Models\Producto;
 use App\Models\Pedido;
@@ -75,7 +75,7 @@ class CarritoController extends Controller
         $totalSaldo = $totalAsignado + $totalAdicion - $totalConsumo;
 
         // Retornar la vista del carrito con los datos necesarios
-        return view('productos.carritoaddfav', compact('cart', 'ficha', 'proveedor', 'areas', 'producto', 'totalSaldo', 'id', 'pedido'));
+        return view('productos.carritoaddfav', compact('cart','proveedor', 'areas', 'producto', 'totalSaldo', 'id', 'pedido'));
     }
 
     public function update(Request $request)
@@ -231,7 +231,7 @@ public function procesarPedidoadd(Request $request)
 
         $Proveedor = Proveedor::all();
 
-        return view('productos.carrito', compact('saldoarea', 'areas', 'totalSaldo', 'ficha', 'Proveedor'));
+        return view('productos.carrito', compact('saldoarea', 'totalSaldo','Proveedor'));
     }
     
 }

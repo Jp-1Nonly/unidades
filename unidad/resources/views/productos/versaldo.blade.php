@@ -26,18 +26,6 @@
                 Productos seleccionados
             </div>
 
-            <div class="card-body">
-                <!-- Mostrar el saldo Ficha -->
-                <div class="mt-4">
-                    <div class="mt-4">
-                        <h6>Saldo Calculado</h6>
-                        @isset($saldo)
-                            <p>El saldo para esta área es: ${{ number_format($saldo, 0, ',', '.') }}</p>
-                        @endisset
-                    </div>
-                    
-                </div>
-            </div>
         </div>
     </main>
 @endsection

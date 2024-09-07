@@ -142,7 +142,6 @@
         transform: translateX(-50%) translateY(-50%);
     }
 </style>
-</head>
 
 <body>
 
@@ -151,11 +150,8 @@
             <tr>
                 <td class="logo_factura">
                     <div>
-                        <div>
-                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/logo.png'))) }}"
-                                width="70" height="70" alt="">
-                        </div>
-
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/logo.png'))) }}"
+                            width="70" height="70" alt="">
                     </div>
                 </td>
                 <td class="info_empresa">
@@ -170,7 +166,6 @@
                     <div class="round">
                         <span class="h3">Pedido</span>
                         <p>N°: <strong>{{ $pedido->id }}</strong></p>
-                        <p>Nombre: {{ $pedido->taller }}</p>
                         <p>Fecha: {{ $pedido->created_at->format('Y-m-d') }}</p>
                         <p>Realizó: {{ $datos->realiza }}</p>
                     </div>
@@ -178,48 +173,33 @@
             </tr>
         </table>
         <table id="factura_cliente">
-
             <tr>
                 <td class="info_cliente">
                     <div class="round">
                         <span class="h3">Datos del pedido</span>
                         <table class="datos_cliente">
                             <tr>
-                                <td><label>Instructor:</label>
-                                    <p>{{ $pedido->profesor->nombre }}</< /p>
+                                <td><label>Proveedor:</label>
+                                    <p>{{ $pedido->proveedor->nombre }}</p>
                                 </td>
                                 <td><label>Documento:</label>
                                     <p>7854526</p>
                                 </td>
                             </tr>
                             <tr>
-                                <td><label>Ficha:</label>
-                                    <p>{{ $pedido->ficha->ficha }}</p>
-                                </td>
-                                <td><label>Programa:</label>
-                                    <p>{{ $pedido->ficha->nombre }}</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>F. inicio:</label>
-                                    <p>{{ $pedido->ficha->f_inicio }}</p>
-                                </td>
-                                <td><label>Fecha fin:</label>
-                                    <p>{{ $pedido->ficha->f_fin }}</p>
-                                </td>
+                                <td><label>F. inicio:</label></td>
                             </tr>
                             <tr>
                                 <td><label>Area:</label>
-                                    <p>{{ $pedido->area->nombre }}</p>
+                                    
                                 </td>
                                 <td><label>Coordinador:</label>
-                                    <p>{{ $pedido->area->coordinador }}</p>
+                                    
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </td>
-
             </tr>
         </table>
 
@@ -231,9 +211,9 @@
                     <tr>
                         <th>Item</th>
                         <th>Descripción</th>
-                        <th  class="textleft">Unidad de medida</th>
+                        <th class="textleft">Unidad de medida</th>
                         <th>Cantidad</th>
-                        </tr>
+                    </tr>
                 </thead>
                 <tbody>
                     <?php
@@ -252,36 +232,29 @@
                                     @endif
                                 </td>
                                 <td>{{ optional($detalle->producto)->medida ?? 'N/A' }}</td>
-
                                 <td class="textright">{{ $detalle->cantidad }}</td>
-                                
                             </tr>
-                            
                         @endif
                     @empty
                         <tr>
                             <td colspan="6">No hay detalles disponibles.</td>
                         </tr>
                     @endforelse
-
                 </tbody>
                 <tfoot id="detalle_totales">
-                    
                 </tfoot>
             </table>
-
         </div>
         <br>
-      
+
         <p>Aceptación del pedido:</p><br>
         <table id="factura_cliente">
             <tr>
                 <td class="">
                     <div class="round">
-
                         <table class="datos_cliente">
                             <tr>
-                                <td><label>Instructor</label></td>
+                                <td><label>Proveedor</label></td>
                                 <td><label>Economato</label></td>
                                 <td><label></label></td>
                             </tr>
@@ -293,11 +266,9 @@
                         </table>
                     </div>
                 </td>
-
             </tr>
         </table>
     </div>
-
 
 </body>
 

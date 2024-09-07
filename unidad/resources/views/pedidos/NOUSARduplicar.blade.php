@@ -20,11 +20,7 @@
                 @method('POST')
 
 
-                <div class="form-group">
-                    <label for="ficha_id">Nuevo número de Ficha</label>
-                        <input class="form-control" id="ficha" name="ficha" type="text"
-                         value="{{ $pedido->ficha->ficha }}"   />
-                </div>
+               
 
                   <div class="form-group">
                     <label for="profesor">Nuevo nombre del Instructor</label>

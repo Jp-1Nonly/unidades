@@ -88,8 +88,6 @@
                         <li><a href="{{ route('areas.index') }}"><i class="fa fa-briefcase blue1_color"></i>
                                 <span>Ejecución</span></a></li>
 
-                        <li><a href="{{ route('fichas.index') }}"><i
-                                    class="fa-regular fa-address-book orange_color"></i> <span>Fichas</span></a></li>
                         <li><a href="{{ route('datos.index') }}"><i class="fa fa-cog yellow_color"></i>
                                 <span>Configurar</span></a></li>
                         <li><a href="contact.html"><i class="fa fa-paper-plane red_color"></i> <span>Créditos</span></a>
@@ -200,8 +198,8 @@
 
                                                     <tr>
                                                         <td style="color: white;">701</td>
-                                                        <td>Ficha</td>
-                                                        <td>Programa</td>
+                                                     
+                                                     
                                                         <td>Area</td>
                                                         <td>Instructor</td>
                                                         <td>Observaciones</td>
@@ -209,8 +207,7 @@
 
                                                     <tr>
                                                         <td style="color: white;">702</td>
-                                                        <td>{{ $pedido->ficha->ficha }}</td>
-                                                        <td>{{ $pedido->ficha->nombre }}</td>
+                                                    
                                                         <td>{{ $pedido->area->nombre }}</td>
                                                         <td>{{ $pedido->profesor->nombre }}</td>
                                                         <td>{{ $pedido->observaciones }}</td>

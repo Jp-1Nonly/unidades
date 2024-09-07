@@ -25,24 +25,7 @@
                             <input class="form-control" type="text" name="taller" value="{{ $pedido->taller }}" required>
                         </div>
 
-                        <div class="mt-4">
-                            <h6>Selecciona ficha</h6>
-                            <select name="ficha" id="ficha" class="form-control">
-                                @foreach ($fichas as $ficha)
-                                    <?php
-                                        $fecha_fin = \Carbon\Carbon::parse($ficha->f_fin);
-                                        $diferencia_dias = \Carbon\Carbon::now()->diffInDays($fecha_fin);
-                                        
-                                        if ($fecha_fin->isPast()) {
-                                            $diferencia_dias *= -1;
-                                        }
-                                    ?>
-                                    <option value="{{ $ficha->id }}" {{ $ficha->id == $pedido->ficha_id ? 'selected' : '' }}>
-                                        {{ $ficha->ficha }} - {{ $ficha->nombre }} - Días para terminar la ficha: {{ intval($diferencia_dias) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                      
                     </div>
 
                         <div class="form-group">

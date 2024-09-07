@@ -5,12 +5,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\DetallePedidoController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ResidentesController;
 use App\Http\Controllers\VisitantesController;
 use App\Http\Controllers\VisitasController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ProductoController;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 Route::get('/', function () {
     return view('welcome');
@@ -68,6 +70,8 @@ Route::get('/verificar_saldo', [CarritoController::class, 'verificarSaldo'])->na
 Route::delete('/pedidos/{pedido}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
 Route::get('/detallepedidos/delete/{id}', [DetallePedidoController::class, 'delete'])->name('detallepedidos.delete');
 Route::get('/pedidos/{pedido}/adicionar', [PedidoController::class, 'adicionar'])->name('pedidos.adicionar');
+
+Route::get('/generate-pdf/{id}', [PdfController::class, 'generarpdf'])->name('generate.pdf');
 
  // Rutas para Productos
  Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');

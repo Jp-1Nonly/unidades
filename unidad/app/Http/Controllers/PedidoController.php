@@ -11,10 +11,10 @@ use DataTables;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\DetallePedido;
-use App\Models\Ficha;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Producto;
 use App\Models\profesore;
-use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PedidoExport;
 use App\Models\Pago;
@@ -48,7 +48,7 @@ class PedidoController extends Controller
     public function show($id)
     {
         $datos = Dato::first();
-        $pedido = Pedido::with(['ficha', 'detalles' => function ($query) {
+        $pedido = Pedido::with(['detalles' => function ($query) {
             $query->orderBy('producto_id', 'asc');
         }])->findOrFail($id);
 
@@ -61,7 +61,7 @@ class PedidoController extends Controller
     public function tabla($id)
     {
         $datos = Dato::first();
-        $pedido = Pedido::with(['ficha', 'detalles' => function ($query) {
+        $pedido = Pedido::with(['detalles' => function ($query) {
             $query->orderBy('producto_id', 'asc');
         }])->findOrFail($id);
 
@@ -75,22 +75,16 @@ class PedidoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ficha' => 'required',
+            
             'profesor' => 'required',
             'observaciones' => 'required',
-            'area_id' => 'required', // Validación para asegurarse de que el área seleccionada exista
-            // Agrega otros campos según la necesidad, incluyendo 'medida' si es necesario
+            
         ]);
 
         // Crea el pedido
         $pedido = new Pedido();
         $pedido->fill($request->all());
         $pedido->save();
-
-        
-        $area = Area::findOrFail($request->area_id);
-        $area->rubro -= $pedido->total; 
-        $area->save();
 
         session()->forget('cart');
         return redirect()->route('pedidos.index')->with('success', 'Pedido realizado con éxito.');
@@ -103,7 +97,7 @@ class PedidoController extends Controller
     {
         // Obtiene el pedido según el ID (usando Eloquent)
         $datos = Dato::first();
-        $pedido = Pedido::with('ficha', 'detalles.producto')->findOrFail($id);
+        $pedido = Pedido::with('detalles.producto')->findOrFail($id);
 
         // Carga la vista 'pedidos.pdf' con los datos del pedido
         $pdf = PDF::loadView('pedidos.pdf', compact('pedido', 'datos'));
@@ -148,12 +142,10 @@ public function update(Request $request, $id)
     
     $pedido->total = 0;
 
-    $pedido->area_id = $request->area_id;
+   
 
     $pedido->taller = $request->taller;
 
-    // Actualizar número de ficha
-    $pedido->ficha_id = $request->ficha;
 
     // Actualizar instructor
     $pedido->profesor_id = $request->profesor;
@@ -239,7 +231,6 @@ public function update(Request $request, $id)
         $nuevoPedido = new Pedido();
         $nuevoPedido->taller = $request->taller;
         $nuevoPedido->area_id = $request->area;
-        $nuevoPedido->ficha_id = $pedidoExistente->ficha_id;
         $nuevoPedido->profesor_id = $request->profesor;
         $nuevoPedido->estado = $request->estado;
         $nuevoPedido->observaciones = $pedidoExistente->observaciones;

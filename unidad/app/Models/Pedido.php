@@ -20,11 +20,17 @@ class Pedido extends Model
         'total',
     ];
 
-    // Relaciones (si aplican)
- 
+    // Relaciones
+
+    // Relación con el modelo Proveedor
     public function proveedor()
     {
-        return $this->belongsTo(Proveedor::class, 'profesor_id');
+        return $this->belongsTo(Proveedor::class, 'proveedor_id'); // Asegúrate de que la clave foránea sea correcta
     }
 
+    // Relación con el modelo DetallePedido
+    public function detalles()
+    {
+        return $this->hasMany(DetallePedido::class, 'pedido_id'); // Ajusta según la clave foránea en la tabla detallepedidos
+    }
 }
