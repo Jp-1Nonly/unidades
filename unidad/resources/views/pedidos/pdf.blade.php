@@ -182,21 +182,10 @@
                                 <td><label>Proveedor:</label>
                                     <p>{{ $pedido->proveedor->nombre }}</p>
                                 </td>
-                                <td><label>Documento:</label>
+                                <td><label>Nit:</label>
                                     <p>7854526</p>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td><label>F. inicio:</label></td>
-                            </tr>
-                            <tr>
-                                <td><label>Area:</label>
-                                    
-                                </td>
-                                <td><label>Coordinador:</label>
-                                    
-                                </td>
-                            </tr>
+                           
                         </table>
                     </div>
                 </td>
@@ -211,41 +200,74 @@
                     <tr>
                         <th>Item</th>
                         <th>Descripción</th>
-                        <th class="textleft">Unidad de medida</th>
-                        <th>Cantidad</th>
+                        <th>Unidad de medida</th>
+                        <th class="textright">Cantidad</th>
+                        <th class="textright">Precio Unitario</th>
+                        <th class="textright"> Precio Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $total = 0;
+                    <?php $total = 0; ?>
+                    @php
                     $detallesOrdenados = $pedido->detalles->sortBy('producto_id');
-                    ?>
-                    @forelse ($detallesOrdenados as $detalle)
-                        @if ($detalle->cantidad != 0)
-                            <tr>
-                                <td>{{ $detalle->producto_id }}</td>
-                                <td>
-                                    @if ($detalle->producto)
-                                        {{ $detalle->producto->nombre }}
-                                    @else
-                                        Producto no disponible
-                                    @endif
-                                </td>
-                                <td>{{ optional($detalle->producto)->medida ?? 'N/A' }}</td>
-                                <td class="textright">{{ $detalle->cantidad }}</td>
-                            </tr>
-                        @endif
+                    @endphp
+                    @forelse ($pedido->detalles as $detalle)
+                    <tr>
+                        <td>{{ $detalle->producto_id }}</td>
+                        <td>
+                            @if ($detalle->producto)
+                            {{ $detalle->producto->nombre }}
+                            @else
+                            Producto no disponible
+                            @endif
+                        </td>
+                        <td>{{ optional($detalle->producto)->medida ?? 'N/A' }}</td>
+                        <td  class="textright">{{ $detalle->cantidad }}</td>
+                        <td  class="textright">
+                            @if ($detalle->producto)
+                            ${{ number_format($detalle->producto->precio, 0, '.', ',') }}
+                            @else
+                            N/A
+                            @endif
+                        </td>
+                        <td class="textright">${{ number_format($detalle->cantidad*$detalle->producto->precio, 0, '.', ',')}}</td>
+                    </tr>
+                    <?php $total = $total + ($detalle->cantidad * $detalle->producto->precio); ?>
+    
                     @empty
-                        <tr>
-                            <td colspan="6">No hay detalles disponibles.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="4">No hay detalles disponibles</td>
+                    </tr>
                     @endforelse
                 </tbody>
                 <tfoot id="detalle_totales">
+    
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td  class="textright">TOTAL:</td>
+                        <td  class="textright"><strong>$<?php echo number_format($total, 0, '.', ','); ?></strong></td>
+                    </tr>
                 </tfoot>
             </table>
         </div>
         <br>
+        <p>Observaciones:</p>
+        <table id="factura_cliente">
+            <tr>
+                <td class="">
+                    <div class="round">
+                        <table class="datos_cliente">
+                            <tr>
+                                <td><p>{{ $pedido->observaciones }}</p></td> 
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <p>Aceptación del pedido:</p><br>
         <table id="factura_cliente">
@@ -254,8 +276,8 @@
                     <div class="round">
                         <table class="datos_cliente">
                             <tr>
-                                <td><label>Proveedor</label></td>
-                                <td><label>Economato</label></td>
+                                <td><label>Administrador</label></td>
+                                <td><label>Revisor</label></td>
                                 <td><label></label></td>
                             </tr>
                             <tr>
