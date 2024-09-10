@@ -40,10 +40,8 @@
                                 <th>Fecha</th>
                                 <th>Valor</th>
                                 <th>Estado</th>
-                                <th>Editar</th>
+                              
                                 <th>PDF</th>
-                                <th>Excel</th>
-                                <th>Duplicar</th>
                                 <th>Eliminar</th>
                                 <th>Adición</th>
                             </tr>
@@ -55,14 +53,7 @@
                                     <td>{{ $pedido->created_at->format('Y-m-d') }}</td>
                                     <td>${{ number_format($sumaPorPedido[$pedido->id] ?? 0, 0, '.', ',') }}</td>
                                     <td>{{ $pedido->estado }}</td>
-                                    <td>
-                                        @if ($pedido->estado == 'Enviado')
-                                            <a class="btn btn-primary btn-sm"
-                                                href="{{ route('pedidos.edit', $pedido->id) }}">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                        @endif
-                                    </td>
+                                    
                                     <td>
 
                                         <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-danger btn-sm">
@@ -70,19 +61,7 @@
                                         </a>
 
                                     </td>
-                                    <td>
-
-                                        <a class="btn btn-success btn-sm" href="{{ route('pedidos.tabla', $pedido->id) }}">
-                                            <i class="fa-solid fa-file-excel"></i>
-                                        </a>
-
-                                    </td>
-                                    <td>
-
-                                        <a href="{{ route('pedidos.clone', $pedido->id) }}" class="btn btn-warning btn-sm">
-                                            <i class="fa-regular fa-clone"></i></a>
-
-                                    </td>
+                                   
                                     <td>
                                         @if ($pedido->estado == 'Enviado')
                                             <form action="{{ route('pedidos.destroy', $pedido->id) }}" method="POST">

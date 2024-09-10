@@ -1,297 +1,245 @@
-<meta charset="UTF-8">
-<title>Factura</title>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+<head>
+    <meta charset="utf-8">
+    <title>Example 1</title>
 
-    p,
-    label,
-    span,
-    table {
-        font-family: 'Verdana';
-        font-size: 9pt;
-    }
+    <style>
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
-    .h2 {
-        font-family: 'BrixSansBlack';
-        font-size: 16pt;
-    }
+        a {
+            color: #5D6975;
+            text-decoration: underline;
+        }
 
-    .h3 {
-        font-family: 'BrixSansBlack';
-        font-size: 12pt;
-        display: block;
-        background: #0a4661;
-        color: #FFF;
-        text-align: center;
-        padding: 3px;
-        margin-bottom: 5px;
-    }
+        body {
+            width: 100%;
+            /* Ajuste del ancho para ocupar todo el espacio disponible */
+            max-width: 21cm;
+            /* Establecer el ancho máximo */
+            height: 29.7cm;
+            margin: 0 auto;
+            color: #001028;
+            background: #FFFFFF;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
 
-    #page_pdf {
-        width: 95%;
-        margin: 15px auto 10px auto;
-    }
+        header {
+            padding: 10px 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-    #factura_head,
-    #factura_cliente,
-    #factura_detalle {
-        width: 100%;
-        margin-bottom: 10px;
-    }
+        #logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-    .logo_factura {
-        width: 25%;
-    }
+        #logo img {
+            width: 90px;
+        }
 
-    .info_empresa {
-        width: 50%;
-        text-align: center;
-    }
+        h1 {
+            border-top: 1px solid #5D6975;
+            border-bottom: 1px solid #5D6975;
+            color: #5D6975;
+            font-size: 1.6em;
+            line-height: 1.4em;
+            font-weight: normal;
+            text-align: center;
+            margin: 0 0 20px 0;
+            background: url(dimension.png);
+        }
 
-    .info_factura {
-        width: 25%;
-    }
+        #project {
+            float: left;
+            text-align: left;
+          
+            width: 48%;
+          
+        }
 
-    .info_cliente {
-        width: 100%;
-    }
 
-    .datos_cliente {
-        width: 100%;
-    }
+        #project span {
+            color: #5D6975;
+            text-align: right;
+            width: 52px;
+            margin-right: 10px;
+            display: inline-block;
+            font-size: 0.8em;
+        }
 
-    .datos_cliente tr td {
-        width: 50%;
-    }
+        #company {
+            float: right;
+            text-align: right;
+        }
 
-    .datos_cliente {
-        padding: 10px 10px 0 10px;
-    }
+        #project div,
+        #company div {
+            white-space: nowrap;
+        }
 
-    .datos_cliente label {
-        width: 75px;
-        display: inline-block;
-    }
+        table {
+            width: 100%;
+            max-width: 100%;
+            /* Asegurar que la tabla no exceda el ancho disponible */
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 20px;
+        }
 
-    .datos_cliente p {
-        display: inline-block;
-    }
+        table tr:nth-child(2n-1) td {
+            background: #F5F5F5;
+        }
 
-    .textright {
-        text-align: right;
-    }
+        table th,
+        table td {
+            text-align: center;
+            padding: 10px;
+            /* Reducir el padding de las celdas */
+        }
 
-    .textleft {
-        text-align: left;
-    }
+        table th {
+            color: #5D6975;
+            border-bottom: 1px solid #C1CED9;
+            white-space: nowrap;
+            font-weight: normal;
+        }
 
-    .textcenter {
-        text-align: center;
-    }
+        table .service,
+        table .desc {
+            text-align: left;
+        }
 
-    .round {
-        border-radius: 10px;
-        border: 1px solid #0a4661;
-        overflow: hidden;
-        padding-bottom: 15px;
-    }
+        table td {
+            padding: 10px;
+            /* Reducir el padding de las celdas */
+            text-align: right;
+        }
 
-    .round p {
-        padding: 0 15px;
-    }
+        table td.service,
+        table td.desc {
+            vertical-align: top;
+        }
 
-    #factura_detalle {
-        border-collapse: collapse;
-    }
+        table td.unit,
+        table td.qty,
+        table td.total {
+            font-size: 1.2em;
+        }
 
-    #factura_detalle thead th {
-        background: #058167;
-        color: #FFF;
-        padding: 5px;
-    }
+        table td.grand {
+            border-top: 1px solid #5D6975;
+        }
 
-    #detalle_productos tr:nth-child(even) {
-        background: #ededed;
-    }
+        #notices .notice {
+            color: #5D6975;
+            font-size: 1.2em;
+        }
 
-    #detalle_totales span {
-        font-family: 'BrixSansBlack';
-    }
-
-    .nota {
-        font-size: 8pt;
-    }
-
-    .label_gracias {
-        font-family: verdana;
-        font-weight: bold;
-        font-style: italic;
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .anulada {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%);
-    }
-</style>
+        footer {
+            color: #5D6975;
+            width: 100%;
+            height: 30px;
+            position: absolute;
+            bottom: 0;
+            border-top: 1px solid #C1CED9;
+            padding: 8px 0;
+            text-align: center;
+        }
+    </style>
+</head>
 
 <body>
-
-    <div id="page_pdf">
-        <table id="factura_head">
-            <tr>
-                <td class="logo_factura">
-                    <div>
-                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/logo.png'))) }}"
-                            width="70" height="70" alt="">
-                    </div>
-                </td>
-                <td class="info_empresa">
-                    <div>
-                        <span class="h2">{{ $datos->sigla }}</span>
-                        <p>{{ $datos->nombre }}</p>
-                        <p>Teléfono: {{ $datos->telefono }}</p>
-                        <p>Correo: {{ $datos->correo }}</p>
-                    </div>
-                </td>
-                <td class="info_factura">
-                    <div class="round">
-                        <span class="h3">Pedido</span>
-                        <p>N°: <strong>{{ $pedido->id }}</strong></p>
-                        <p>Fecha: {{ $pedido->created_at->format('Y-m-d') }}</p>
-                        <p>Realizó: {{ $datos->realiza }}</p>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <table id="factura_cliente">
-            <tr>
-                <td class="info_cliente">
-                    <div class="round">
-                        <span class="h3">Datos del pedido</span>
-                        <table class="datos_cliente">
-                            <tr>
-                                <td><label>Proveedor:</label>
-                                    <p>{{ $pedido->proveedor->nombre }}</p>
-                                </td>
-                                <td><label>Nit:</label>
-                                    <p>7854526</p>
-                                </td>
-                           
-                        </table>
-                    </div>
-                </td>
-            </tr>
-        </table>
-
-        <div>
-            <br>
-
-            <table id="factura_detalle">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Descripción</th>
-                        <th>Unidad de medida</th>
-                        <th class="textright">Cantidad</th>
-                        <th class="textright">Precio Unitario</th>
-                        <th class="textright"> Precio Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $total = 0; ?>
-                    @php
-                    $detallesOrdenados = $pedido->detalles->sortBy('producto_id');
-                    @endphp
-                    @forelse ($pedido->detalles as $detalle)
-                    <tr>
-                        <td>{{ $detalle->producto_id }}</td>
-                        <td>
-                            @if ($detalle->producto)
-                            {{ $detalle->producto->nombre }}
-                            @else
-                            Producto no disponible
-                            @endif
-                        </td>
-                        <td>{{ optional($detalle->producto)->medida ?? 'N/A' }}</td>
-                        <td  class="textright">{{ $detalle->cantidad }}</td>
-                        <td  class="textright">
-                            @if ($detalle->producto)
-                            ${{ number_format($detalle->producto->precio, 0, '.', ',') }}
-                            @else
-                            N/A
-                            @endif
-                        </td>
-                        <td class="textright">${{ number_format($detalle->cantidad*$detalle->producto->precio, 0, '.', ',')}}</td>
-                    </tr>
-                    <?php $total = $total + ($detalle->cantidad * $detalle->producto->precio); ?>
-    
-                    @empty
-                    <tr>
-                        <td colspan="4">No hay detalles disponibles</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-                <tfoot id="detalle_totales">
-    
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td  class="textright">TOTAL:</td>
-                        <td  class="textright"><strong>$<?php echo number_format($total, 0, '.', ','); ?></strong></td>
-                    </tr>
-                </tfoot>
-            </table>
+    <header class="clearfix">
+        <div id="logo">
+            <img src="logo.png">
         </div>
-        <br>
-        <p>Observaciones:</p>
-        <table id="factura_cliente">
-            <tr>
-                <td class="">
-                    <div class="round">
-                        <table class="datos_cliente">
-                            <tr>
-                                <td><p>{{ $pedido->observaciones }}</p></td> 
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>
+        <h1>INVOICE 3-2-1</h1>
+        <div id="company" class="clearfix">
+            <div>Company Name</div>
+            <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+            <div>(602) 519-0450</div>
+            <div><a href="mailto:company@example.com">company@example.com</a></div>
+        </div>
+        <div id="project">
+            <div><span>PROJECT</span> Website development</div>
+            <div><span>CLIENT</span> John Doe</div>
+            <div><span>ADDRESS</span> 796 Silver Harbour, TX 79273, US</div>
+            <div><span>EMAIL</span> <a href="mailto:john@example.com">john@example.com</a></div>
+            <div><span>DATE</span> August 17, 2015</div>
+            <div><span>DUE DATE</span> September 17, 2015</div>
+        </div>
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th class="service">SERVICE</th>
+                    <th class="desc">DESCRIPTION</th>
+                    <th>PRICE</th>
+                    <th>QTY</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="service">Design</td>
+                    <td class="desc">Creating a recognizable design solution based on the company's existing visual
+                        identity</td>
+                    <td class="unit">$40.00</td>
+                    <td class="qty">26</td>
+                    <td class="total">$1,040.00</td>
+                </tr>
+                <tr>
+                    <td class="service">Development</td>
+                    <td class="desc">Developing a Content Management System-based Website</td>
+                    <td class="unit">$40.00</td>
+                    <td class="qty">80</td>
+                    <td class="total">$3,200.00</td>
+                </tr>
+                <tr>
+                    <td class="service">SEO</td>
+                    <td class="desc">Optimize the site for search engines (SEO)</td>
+                    <td class="unit">$40.00</td>
+                    <td class="qty">20</td>
+                    <td class="total">$800.00</td>
+                </tr>
+                <tr>
+                    <td class="service">Training</td>
+                    <td class="desc">Initial training sessions for staff responsible for uploading web content</td>
+                    <td class="unit">$40.00</td>
+                    <td class="qty">4</td>
+                    <td class="total">$160.00</td>
+                </tr>
+                <tr>
+                    <td colspan="4">SUBTOTAL</td>
+                    <td class="total">$5,200.00</td>
+                </tr>
+                <tr>
+                    <td colspan="4">TAX 25%</td>
+                    <td class="total">$1,300.00</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="grand total">GRAND TOTAL</td>
+                    <td class="grand total">$6,500.00</td>
+                </tr>
+            </tbody>
         </table>
-
-        <p>Aceptación del pedido:</p><br>
-        <table id="factura_cliente">
-            <tr>
-                <td class="">
-                    <div class="round">
-                        <table class="datos_cliente">
-                            <tr>
-                                <td><label>Administrador</label></td>
-                                <td><label>Revisor</label></td>
-                                <td><label></label></td>
-                            </tr>
-                            <tr>
-                                <td>_______________</td>
-                                <td>_______________</td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
+        <div id="notices">
+            <div>NOTICE:</div>
+            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+        </div>
+    </main>
+    <footer>
+        Invoice was created on a computer and is valid without the signature and seal.
+    </footer>
 </body>
 
 </html>

@@ -1,129 +1,147 @@
-@import url('fonts/BrixSansRegular.css');
-@import url('fonts/BrixSansBlack.css');
-
-*{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-#page_pdf {
-    background-color: #ffffff; /* Fondo blanco */
-    width: 95%;
-    margin: 15px auto 10px auto;
-    padding: 20px; /* Añade un poco de espacio interno */
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
 }
 
-.round {
-    background-color: #ffffff; /* Fondo blanco para los contenedores redondeados */
-    border-radius: 10px;
-    border: 1px solid #0a4661;
-    overflow: hidden;
-    padding-bottom: 15px;
+a {
+	color: #5D6975;
+	text-decoration: underline;
 }
 
-p, label, span, table{
-	font-family: 'BrixSansRegular';
-	font-size: 9pt;
-}
-.h2{
-	font-family: 'BrixSansBlack';
-	font-size: 16pt;
-}
-.h3{
-	font-family: 'BrixSansBlack';
-	font-size: 12pt;
-	display: block;
-	background: #0a4661;
-	color: #FFF;
-	text-align: center;
-	padding: 3px;
-	margin-bottom: 5px;
-}
-#page_pdf{
-	width: 95%;
-	margin: 15px auto 10px auto;
-}
-
-#factura_head, #factura_cliente, #factura_detalle{
+body {
 	width: 100%;
+	/* Ajuste del ancho para ocupar todo el espacio disponible */
+	max-width: 21cm;
+	/* Establecer el ancho máximo */
+	height: 29.7cm;
+	margin: 0 auto;
+	color: #001028;
+	background: #FFFFFF;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+
+header {
+	padding: 10px 0;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+#logo {
+	text-align: center;
 	margin-bottom: 10px;
 }
-.logo_factura{
-	width: 25%;
-}
-.info_empresa{
-	width: 50%;
-	text-align: center;
-}
-.info_factura{
-	width: 25%;
-}
-.info_cliente{
-	width: 100%;
-}
-.datos_cliente{
-	width: 100%;
-}
-.datos_cliente tr td{
-	width: 50%;
-}
-.datos_cliente{
-	padding: 10px 10px 0 10px;
-}
-.datos_cliente label{
-	width: 75px;
-	display: inline-block;
-}
-.datos_cliente p{
-	display: inline-block;
+
+#logo img {
+	width: 90px;
 }
 
-.textright{
+h1 {
+	border-top: 1px solid #5D6975;
+	border-bottom: 1px solid #5D6975;
+	color: #5D6975;
+	font-size: 1.6em;
+	line-height: 1.4em;
+	font-weight: normal;
+	text-align: center;
+	margin: 0 0 20px 0;
+	background: url(dimension.png);
+}
+
+#project {
+	float: left;
+	text-align: left;
+  
+	width: 48%;
+  
+}
+
+
+#project span {
+	color: #5D6975;
+	text-align: right;
+	width: 52px;
+	margin-right: 10px;
+	display: inline-block;
+	font-size: 0.8em;
+}
+
+#company {
+	float: right;
 	text-align: right;
 }
-.textleft{
-	text-align: left;
-}
-.textcenter{
-	text-align: center;
-}
-.round{
-	border-radius: 10px;
-	border: 1px solid #0a4661;
-	overflow: hidden;
-	padding-bottom: 15px;
-}
-.round p{
-	padding: 0 15px;
+
+#project div,
+#company div {
+	white-space: nowrap;
 }
 
-#factura_detalle{
+table {
+	width: 100%;
+	max-width: 100%;
+	/* Asegurar que la tabla no exceda el ancho disponible */
 	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 20px;
 }
-#factura_detalle thead th{
-	background: #058167;
-	color: #FFF;
-	padding: 5px;
+
+table tr:nth-child(2n-1) td {
+	background: #F5F5F5;
 }
-#detalle_productos tr:nth-child(even) {
-    background: #ededed;
-}
-#detalle_totales span{
-	font-family: 'BrixSansBlack';
-}
-.nota{
-	font-size: 8pt;
-}
-.label_gracias{
-	font-family: verdana;
-	font-weight: bold;
-	font-style: italic;
+
+table th,
+table td {
 	text-align: center;
-	margin-top: 20px;
+	padding: 10px;
+	/* Reducir el padding de las celdas */
 }
-.anulada{
+
+table th {
+	color: #5D6975;
+	border-bottom: 1px solid #C1CED9;
+	white-space: nowrap;
+	font-weight: normal;
+}
+
+table .service,
+table .desc {
+	text-align: left;
+}
+
+table td {
+	padding: 10px;
+	/* Reducir el padding de las celdas */
+	text-align: right;
+}
+
+table td.service,
+table td.desc {
+	vertical-align: top;
+}
+
+table td.unit,
+table td.qty,
+table td.total {
+	font-size: 1.2em;
+}
+
+table td.grand {
+	border-top: 1px solid #5D6975;
+}
+
+#notices .notice {
+	color: #5D6975;
+	font-size: 1.2em;
+}
+
+footer {
+	color: #5D6975;
+	width: 100%;
+	height: 30px;
 	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translateX(-50%) translateY(-50%);
+	bottom: 0;
+	border-top: 1px solid #C1CED9;
+	padding: 8px 0;
+	text-align: center;
 }
