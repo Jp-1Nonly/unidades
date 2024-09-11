@@ -27,8 +27,10 @@
     <link href="{{ asset('assets/libs/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables/scroller.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 
 </head>
@@ -42,7 +44,8 @@
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('assets/images/users/avatar-1.jpg')}}" alt="user-image" class="rounded-circle">
+                        <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-image"
+                            class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <!-- item-->
@@ -63,11 +66,20 @@
 
                         <div class="dropdown-divider"></div>
 
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="mdi mdi-power-settings"></i>
-                            <span>Logout</span>
-                        </a>
+                                           
+                            <!-- Formulario de Logout oculto -->
+                            <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
+                                @csrf
+                            </form>
+                        
+                            <!-- Enlace de Logout -->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item"  style="color: red;"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="mdi mdi-power-settings"></i>
+                                <span>Salir</span>
+                            </a>
+                        
+                        
 
                     </div>
                 </li>
@@ -79,23 +91,23 @@
             <div class="logo-box">
                 <a href="index.html" class="logo text-center logo-dark">
                     <span class="logo-lg">
-                        <img src="{{ asset('assets/images/logo-dark.png')}}" alt="" height="16">
+                        <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="16">
                         <!-- <span class="logo-lg-text-dark">Moltran</span> -->
                     </span>
                     <span class="logo-sm">
                         <!-- <span class="logo-lg-text-dark">M</span> -->
-                        <img src="{{ asset('assets/images/logo-sm.png')}}" alt="" height="25">
+                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="25">
                     </span>
                 </a>
 
                 <a href="index.html" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img src="{{ asset('assets/images/logo-light.png')}}" alt="" height="16">
+                        <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="16">
                         <!-- <span class="logo-lg-text-dark">Moltran</span> -->
                     </span>
                     <span class="logo-sm">
                         <!-- <span class="logo-lg-text-dark">M</span> -->
-                        <img src="{{ asset('assets/images/logo-sm.png')}}" alt="" height="25">
+                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="25">
                     </span>
                 </a>
             </div>
@@ -125,14 +137,16 @@
                     <div class="user-box">
 
                         <div class="float-left">
-                            <img src="{{ asset('assets/images/users/avatar-1.jpg')}}" alt=""
+                            <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt=""
                                 class="avatar-md rounded-circle">
                         </div>
                         <div class="user-info">
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    John Doe <i class="mdi mdi-chevron-down"></i>
+                                    <span
+                                        class="name_user">{{ \Illuminate\Support\Facades\Auth::user()->name }}</span>
+                                    <i class="mdi mdi-chevron-down"></i>
                                 </a>
                                 <ul class="dropdown-menu" x-placement="bottom-start"
                                     style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
@@ -143,11 +157,26 @@
                                                 class="mdi mdi-settings mr-2"></i> Settings</a></li>
                                     <li><a href="javascript:void(0)" class="dropdown-item"><i
                                                 class="mdi mdi-lock mr-2"></i> Lock screen</a></li>
-                                    <li><a href="javascript:void(0)" class="dropdown-item"><i
-                                                class="mdi mdi-power-settings mr-2"></i> Logout</a></li>
+                                    <li>
+                                        <!-- Formulario de Logout oculto -->
+                                        <form method="POST" action="{{ route('logout') }}" id="logout-form"
+                                            style="display: none;">
+                                            @csrf
+                                        </form>
+
+                                        <!-- Enlace de Logout -->
+                                        <a href="javascript:void(0)" class="dropdown-item"  style="color: red;"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="mdi mdi-power-settings mr-2"></i> Salir
+                                        </a>
+                                    </li>
+
+
+
                                 </ul>
+
                             </div>
-                            <p class="font-13 text-muted m-0">Administrator</p>
+                            <p class="font-13 text-muted m-0">Administrador</p>
                         </div>
                     </div>
 
@@ -159,10 +188,10 @@
                                 <span> Dashboard </span>
                             </a>
                         </li>
-                        
+
                         <li>
                             <a href="javascript: void(0);" class="waves-effect">
-                                <i class="mdi mdi-account-multiple" ></i>
+                                <i class="mdi mdi-account-multiple"></i>
                                 <span> Personal </span>
                                 <span class="menu-arrow"></span>
                             </a>
@@ -170,7 +199,7 @@
                                 <li><a href="{{ url('/departamentos') }}">Departamentos</a></li>
                                 <li><a href="{{ url('/personas') }}">Colaboradores</a></li>
                                 <li><a href="{{ url('/residentes') }}">Residentes</a></li>
-                                                               
+
                             </ul>
                         </li>
                         <li>
@@ -180,8 +209,10 @@
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="{{ url('/visitantes') }}"><i class="mdi mdi-account-multiple" ></i> Visitantes</a></li>
-                                <li><a href="{{ url('/visitas') }}"><i class="far fa-address-book"></i> Lista de visitas</a></li>                              
+                                <li><a href="{{ url('/visitantes') }}"><i class="mdi mdi-account-multiple"></i>
+                                        Visitantes</a></li>
+                                <li><a href="{{ url('/visitas') }}"><i class="far fa-address-book"></i> Lista de
+                                        visitas</a></li>
                             </ul>
                         </li>
                         <li>
@@ -191,11 +222,12 @@
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
-                                
-                                <li><a href="{{ url('/pedidos') }}"><i class="far fa-address-book"></i> Lista de pedidos</a></li>                              
+
+                                <li><a href="{{ url('/pedidos') }}"><i class="far fa-address-book"></i> Lista de
+                                        pedidos</a></li>
                             </ul>
                         </li>
-                       
+
                     </ul>
 
                 </div>
@@ -232,7 +264,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                           2024 &copy; PHSoft <a href=""></a>
+                            2024 &copy; PHSoft <a href=""></a>
                         </div>
                     </div>
                 </div>

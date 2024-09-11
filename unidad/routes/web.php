@@ -14,14 +14,17 @@ use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\ProductoController;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+// Redirige la raíz (/) al login
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
+// Ruta para el dashboard (requiere autenticación)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Rutas protegidas por autenticación
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -38,21 +41,20 @@ Route::get('/personas', [PersonasController::class, 'index'])->name('personas.in
 Route::get('personas/create', [PersonasController::class, 'create'])->name('personas.create');
 Route::post('/personas', [PersonasController::class, 'store'])->name('personas.store');
 
-// Rutas para visitantes
+// Rutas para Visitantes
 Route::get('/visitantes', [VisitantesController::class, 'index'])->name('visitantes.index');
 Route::get('/visitantes/create', [VisitantesController::class, 'create'])->name('visitantes.create');
 Route::post('/visitantesadd', [VisitantesController::class, 'store'])->name('visitantes.store');
 
-// Rutas para residentes
+// Rutas para Residentes
 Route::get('/residentes', [ResidentesController::class, 'index'])->name('residentes.index');
 Route::get('/residentes/create', [ResidentesController::class, 'create'])->name('residentes.create');
 Route::post('/residentesadd', [ResidentesController::class, 'store'])->name('residentes.store');
 
-// Rutas para visitas
+// Rutas para Visitas
 Route::get('/visitas', [VisitasController::class, 'index'])->name('visitas.index');
 Route::get('/visitas/create', [VisitasController::class, 'create'])->name('visitas.create');
-Route::post('visitasadd',[VisitasController::class, 'store'])->name('visitas.store');
-
+Route::post('visitasadd', [VisitasController::class, 'store'])->name('visitas.store');
 Route::get('visitas/{id}/edit', [VisitasController::class, 'edit'])->name('visitas.edit');
 Route::put('visitas/{id}', [VisitasController::class, 'update'])->name('visitas.update');
 
@@ -71,36 +73,36 @@ Route::delete('/pedidos/{pedido}', [PedidoController::class, 'destroy'])->name('
 Route::get('/detallepedidos/delete/{id}', [DetallePedidoController::class, 'delete'])->name('detallepedidos.delete');
 Route::get('/pedidos/{pedido}/adicionar', [PedidoController::class, 'adicionar'])->name('pedidos.adicionar');
 
+// Rutas para generar PDFs
 Route::get('/generate-pdf/{id}', [PdfController::class, 'generarpdf'])->name('generate.pdf');
 
- // Rutas para Productos
- Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
- Route::get('/productos/listaproductos', [ProductoController::class, 'listado'])->name('productos.lista');
- Route::post('/add-to-cart/{id}', [ProductoController::class, 'addToCart']);
- Route::delete('/remove-from-cart/{id}', [ProductoController::class, 'removeFromCart']);
- Route::post('/add-to-cartadd/{id}', [ProductoController::class, 'addToCartadd']);
+// Rutas para Productos
+Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/productos/listaproductos', [ProductoController::class, 'listado'])->name('productos.lista');
+Route::post('/add-to-cart/{id}', [ProductoController::class, 'addToCart']);
+Route::delete('/remove-from-cart/{id}', [ProductoController::class, 'removeFromCart']);
+Route::post('/add-to-cartadd/{id}', [ProductoController::class, 'addToCartadd']);
 
-  // Rutas para Carrito
-  Route::get('/carrito', [CarritoController::class, 'index']);
-  Route::get('/carritoadd/{id}', [CarritoController::class, 'indexadd']);
-  Route::put('/update-cart', [CarritoController::class, 'update'])->name('carrito.update');
-  Route::put('/update-cartadd', [CarritoController::class, 'updateadd'])->name('carritoadd.update');
-  Route::put('/update-cartaddfav', [CarritoController::class, 'updateaddfav'])->name('carritoaddfav.updatefav');
-  Route::get('/carritoadd/{id}', [CarritoController::class, 'indexadd'])->name('carritoadd');
-  Route::get('/carritoaddfav/{id}', [CarritoController::class, 'indexaddfav'])->name('carritoaddfav');
-  Route::delete('/clear-cart', [CarritoController::class, 'clearCart']);
-  Route::delete('/remove-item/{id}', [CarritoController::class, 'removeItem'])->name('remove-item');
-  Route::post('/add-discount', [CarritoController::class, 'addDiscount']);
-  Route::delete('/remove-discount', [CarritoController::class, 'removeDiscount']);
-  Route::get('/checkout', [CarritoController::class, 'checkout']);
-  Route::post('/procesar-pedido', [CarritoController::class, 'procesarPedido']);
-  Route::post('/procesar-pedidoadd', [CarritoController::class, 'procesarPedidoadd']);
-  Route::post('/procesar-pedidoaddfav', [CarritoController::class, 'procesarPedidoaddfav']);
-  Route::post('/procesar-favorito', [CarritoController::class, 'procesarPedidoFavorito']);
-  Route::delete('/empty-cart', [CarritoController::class, 'emptyCart'])->name('empty-cart');
-  Route::post('/update-cart-all', [CarritoController::class, 'updateAll'])->name('update-cart-all');    
-  Route::get('/productos/consulta', [CarritoController::class, 'mostrarFormularioSaldo'])->name('productos.mostrarSaldoForm');
-  Route::post('/productos/saldoarea', [CarritoController::class, 'calcularSaldoArea'])->name('productos.saldoarea');
-
+// Rutas para Carrito
+Route::get('/carrito', [CarritoController::class, 'index']);
+Route::get('/carritoadd/{id}', [CarritoController::class, 'indexadd']);
+Route::put('/update-cart', [CarritoController::class, 'update'])->name('carrito.update');
+Route::put('/update-cartadd', [CarritoController::class, 'updateadd'])->name('carritoadd.update');
+Route::put('/update-cartaddfav', [CarritoController::class, 'updateaddfav'])->name('carritoaddfav.updatefav');
+Route::get('/carritoadd/{id}', [CarritoController::class, 'indexadd'])->name('carritoadd');
+Route::get('/carritoaddfav/{id}', [CarritoController::class, 'indexaddfav'])->name('carritoaddfav');
+Route::delete('/clear-cart', [CarritoController::class, 'clearCart']);
+Route::delete('/remove-item/{id}', [CarritoController::class, 'removeItem'])->name('remove-item');
+Route::post('/add-discount', [CarritoController::class, 'addDiscount']);
+Route::delete('/remove-discount', [CarritoController::class, 'removeDiscount']);
+Route::get('/checkout', [CarritoController::class, 'checkout']);
+Route::post('/procesar-pedido', [CarritoController::class, 'procesarPedido']);
+Route::post('/procesar-pedidoadd', [CarritoController::class, 'procesarPedidoadd']);
+Route::post('/procesar-pedidoaddfav', [CarritoController::class, 'procesarPedidoaddfav']);
+Route::post('/procesar-favorito', [CarritoController::class, 'procesarPedidoFavorito']);
+Route::delete('/empty-cart', [CarritoController::class, 'emptyCart'])->name('empty-cart');
+Route::post('/update-cart-all', [CarritoController::class, 'updateAll'])->name('update-cart-all');    
+Route::get('/productos/consulta', [CarritoController::class, 'mostrarFormularioSaldo'])->name('productos.mostrarSaldoForm');
+Route::post('/productos/saldoarea', [CarritoController::class, 'calcularSaldoArea'])->name('productos.saldoarea');
 
 require __DIR__.'/auth.php';
